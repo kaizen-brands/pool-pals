@@ -1,9 +1,12 @@
 @import "tailwindcss";
-@import "@fontsource/instrument-serif/400.css";
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/inter/600.css";
-@import "@fontsource/inter/700.css";
+@import "@fontsource/bricolage-grotesque/400.css";
+@import "@fontsource/bricolage-grotesque/500.css";
+@import "@fontsource/bricolage-grotesque/600.css";
+@import "@fontsource/bricolage-grotesque/700.css";
+@import "@fontsource/space-grotesk/400.css";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/space-grotesk/700.css";
 @import "@fontsource/jetbrains-mono/400.css";
 @import "@fontsource/jetbrains-mono/500.css";
 @import "tw-animate-css";
@@ -29,8 +32,8 @@
   --color-success: oklch(0.62 0.14 150);
 
   /* Pool Pals Fonts */
-  --font-display: "Instrument Serif", "Times New Roman", serif;
-  --font-ui: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-ui: "Space Grotesk", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   /* Pool Pals Radii */
@@ -68,8 +71,38 @@
     font-family: var(--font-ui);
     color: var(--color-ink);
     background: var(--color-bg);
+    font-size: 16px;
+    line-height: 1.55;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  input, select, textarea {
+    font-family: inherit;
+    font-size: 15px;
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--color-hairline);
+    border-radius: 10px;
+    background: var(--color-bg);
+    color: var(--color-ink);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    outline: 0;
+    border-color: var(--color-aqua);
+    box-shadow: 0 0 0 4px oklch(0.62 0.13 215 / 0.15);
   }
 }
 
@@ -203,27 +236,26 @@
   .btn {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-family: var(--font-ui);
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1;
-    padding: 12px 24px;
+    gap: 10px;
+    padding: 14px 22px;
     border-radius: 999px;
+    font-family: var(--font-ui);
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: -0.005em;
+    line-height: 1;
     border: 1.5px solid transparent;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
     white-space: nowrap;
   }
 
   .btn:hover {
     transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
   }
 
   .btn:active {
-    transform: translateY(0);
+    transform: translateY(1px);
   }
 
   .btn:disabled {
@@ -235,13 +267,13 @@
 
   /* Button sizes */
   .btn-sm {
-    padding: 8px 16px;
-    font-size: 13px;
+    padding: 10px 16px;
+    font-size: 14px;
   }
 
   .btn-lg {
-    padding: 16px 32px;
-    font-size: 15px;
+    padding: 18px 30px;
+    font-size: 16px;
   }
 
   /* Button variants */
@@ -249,22 +281,26 @@
     background-color: var(--color-aqua);
     color: white;
     border-color: var(--color-aqua);
+    box-shadow: 0 6px 16px oklch(0.62 0.13 215 / 0.35);
   }
 
   .btn-aqua:hover {
     background-color: var(--color-aqua-deep);
     border-color: var(--color-aqua-deep);
+    box-shadow: 0 10px 24px oklch(0.48 0.13 220 / 0.4);
   }
 
   .btn-primary {
     background-color: var(--color-ink);
     color: var(--color-bg);
     border-color: var(--color-ink);
+    box-shadow: var(--shadow-sm);
   }
 
   .btn-primary:hover {
-    background-color: var(--color-ink-soft);
-    border-color: var(--color-ink-soft);
+    background-color: oklch(0.32 0.04 240);
+    border-color: oklch(0.32 0.04 240);
+    box-shadow: var(--shadow-md);
   }
 
   .btn-ghost {
@@ -274,8 +310,136 @@
   }
 
   .btn-ghost:hover {
-    background-color: var(--color-bg-alt);
-    border-color: var(--color-hairline);
+    border-color: var(--color-ink);
+  }
+
+  /* Display type */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+  }
+
+  /* Eyebrow */
+  .eyebrow {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-aqua-deep);
+  }
+
+  /* Mono & tabular */
+  .mono {
+    font-family: var(--font-mono);
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Hairlines */
+  .hairline {
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .hairline-b {
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  /* Stars */
+  .stars {
+    display: inline-flex;
+    gap: 2px;
+    color: var(--color-sun);
+  }
+
+  .stars svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Fade up animation */
+  .fade-up {
+    animation: fade-up 0.6s ease both;
+  }
+
+  /* Shimmer background */
+  .shimmer {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 0%, oklch(0.62 0.13 215 / 0.18), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 90% 80%, oklch(0.78 0.13 75 / 0.12), transparent 60%);
+    pointer-events: none;
+  }
+
+  /* Wave divider */
+  .wave-divider {
+    display: block;
+    width: 100%;
+    height: 50px;
+  }
+
+  /* Image placeholder */
+  .img-ph {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background:
+      repeating-linear-gradient(
+        135deg,
+        oklch(0.92 0.04 210),
+        oklch(0.92 0.04 210) 10px,
+        oklch(0.95 0.04 210) 10px,
+        oklch(0.95 0.04 210) 20px
+      );
+    border: 1px solid var(--color-hairline);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .img-ph .label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: oklch(0.4 0.06 220);
+    background: rgba(255,255,255,0.85);
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--color-hairline);
+    text-transform: uppercase;
+  }
+
+  .img-ph.warm {
+    background:
+      repeating-linear-gradient(
+        135deg,
+        oklch(0.95 0.05 80),
+        oklch(0.95 0.05 80) 10px,
+        oklch(0.97 0.04 80) 10px,
+        oklch(0.97 0.04 80) 20px
+      );
+  }
+
+  .img-ph.deep {
+    background:
+      repeating-linear-gradient(
+        135deg,
+        oklch(0.42 0.1 220),
+        oklch(0.42 0.1 220) 10px,
+        oklch(0.46 0.1 220) 10px,
+        oklch(0.46 0.1 220) 20px
+      );
+  }
+
+  .img-ph.deep .label {
+    background: rgba(0,0,0,0.35);
+    color: white;
+    border-color: rgba(255,255,255,0.2);
   }
 
   /* Shadcn dialog/sheet overlay fixes for light theme */
