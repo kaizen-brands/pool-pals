@@ -1,0 +1,95 @@
+---
+const services = [
+  {
+    icon: 'drop',
+    title: 'Weekly cleaning',
+    desc: 'Skim, brush, vacuum, empty baskets, backwash. Same time every week, same friendly tech.',
+    tag: 'Most popular',
+    bullets: ['45–60 min visit', 'Photo report after each clean', 'All chemicals included'],
+  },
+  {
+    icon: 'wrench',
+    title: 'Chemical balancing',
+    desc: 'Lab-grade testing every visit — pH, chlorine, alkalinity, calcium hardness, stabiliser, salt.',
+    bullets: ['6-point water test', 'Adjusted on the spot', 'Logged in your dashboard'],
+  },
+  {
+    icon: 'shield',
+    title: 'Equipment checks',
+    desc: 'Pumps, filters, chlorinators, heaters. We catch small problems before they\'re big bills.',
+    bullets: ['Quarterly health check', 'Manufacturer-trained techs', 'Parts at trade prices'],
+  },
+  {
+    icon: 'leaf',
+    title: 'Green pool recovery',
+    desc: 'Storm-hit, neglected, or just gone bright green? Most pools fully clear within 3–5 days.',
+    tag: 'Rescue',
+    bullets: ['Fixed-price diagnosis', 'No-recovery, no-charge', 'Daily progress photos'],
+  },
+];
+---
+
+<section id="services" class="py-24">
+  <div class="container-main">
+    <div class="grid lg:grid-cols-2 gap-12 items-end mb-14">
+      <div>
+        <div class="section-eyebrow eyebrow"><span class="dot"></span>What we do</div>
+        <h2 class="font-display text-[clamp(36px,4.5vw,60px)] leading-none">
+          Four services.<br />
+          <span class="text-aqua-deep italic">One reliable team.</span>
+        </h2>
+      </div>
+      <p class="text-[17px] text-ink-soft max-w-[460px] lg:ml-auto">
+        We do pools — and only pools. No upsells, no bait-and-switch, no "while I'm here, your filter looks
+        old." Honest work for the people who live with the pool.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-5">
+      {services.map((s) => (
+        <div key={s.title} class="card p-8 relative">
+          {s.tag && (
+            <span class={`absolute top-6 right-6 text-[11px] px-2.5 py-1 rounded-full font-semibold tracking-wide ${s.tag === 'Rescue' ? 'bg-[oklch(0.92_0.06_30)] text-[oklch(0.45_0.15_30)]' : 'bg-aqua-soft text-[var(--color-aqua-deep)]'}`}>
+              {s.tag}
+            </span>
+          )}
+          <div class="w-12 h-12 rounded-xl bg-aqua-soft text-[var(--color-aqua-deep)] flex items-center justify-center mb-6">
+            {s.icon === 'drop' && (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+                <path d="M12 2.7l5.5 7.5a7 7 0 11-11 0L12 2.7z"/>
+              </svg>
+            )}
+            {s.icon === 'wrench' && (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+                <path d="M14.7 6.3a4 4 0 105.6 5.6l-1.6 1.6L21 16l-5 5-3-3-7.5 7.5a2.1 2.1 0 11-3-3L11 14l-3-3 2.5-2.5L13 11l1.7-4.7z"/>
+              </svg>
+            )}
+            {s.icon === 'shield' && (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            )}
+            {s.icon === 'leaf' && (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+                <path d="M21 4c-9 0-16 5-16 13a4 4 0 004 4c8 0 13-7 13-16-0-1 0-1 0-1z"/>
+                <path d="M5 21c2-7 7-12 14-13"/>
+              </svg>
+            )}
+          </div>
+          <h3 class="font-display text-[30px] leading-none mb-2.5">{s.title}</h3>
+          <p class="text-ink-soft text-[15px] mb-5 leading-relaxed">{s.desc}</p>
+          <ul class="grid gap-2">
+            {s.bullets.map((b) => (
+              <li key={b} class="flex items-center gap-2.5 text-sm text-ink-soft">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 text-[var(--color-success)] shrink-0">
+                  <path d="M4 12.5l5 5L20 6.5"/>
+                </svg>
+                {b}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

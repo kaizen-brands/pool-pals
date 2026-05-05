@@ -1,0 +1,128 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const title = 'Reviews — What Gold Coast Pool Owners Say | Pool Pals';
+const description = '312 five-star Google reviews from real Gold Coast pool owners. See why families, Airbnb hosts, and strata managers trust Pool Pals for weekly pool cleaning.';
+
+const reviews = [
+  {
+    name: 'Sarah T.',
+    suburb: 'Burleigh Heads',
+    stars: 5,
+    text: "We've used Pool Pals for 3 years now. Dave is always on time, sends photos after every clean, and our pool has never looked better. Worth every cent.",
+    tag: 'Residential',
+  },
+  {
+    name: 'James & Karen M.',
+    suburb: 'Hope Island',
+    stars: 5,
+    text: 'After our previous pool guy ghosted us for 3 weeks, Pool Pals stepped in and had our green pool crystal clear in 4 days. Professional, transparent, reliable.',
+    tag: 'Green pool recovery',
+  },
+  {
+    name: 'Coastal Strata Management',
+    suburb: 'Broadbeach',
+    stars: 5,
+    text: 'We manage 6 apartment blocks and Pool Pals handles all the pools. Their reporting is excellent — we get a dashboard view of every pool\'s health. Makes strata meetings easy.',
+    tag: 'Commercial',
+  },
+  {
+    name: 'Rachel P.',
+    suburb: 'Mermaid Beach',
+    stars: 5,
+    text: 'As an Airbnb host, pool cleanliness is everything for reviews. Pool Pals\' Concierge plan means my pool is guest-ready every single check-in. Lifesaver.',
+    tag: 'Short-stay rental',
+  },
+  {
+    name: 'Michael H.',
+    suburb: 'Robina',
+    stars: 5,
+    text: 'Marcus came out on a Sunday when our pump failed during a heatwave. Didn\'t charge emergency rates, just fixed it. That\'s the kind of service you can\'t buy.',
+    tag: 'Equipment repair',
+  },
+  {
+    name: 'The Henderson Family',
+    suburb: 'Currumbin',
+    stars: 5,
+    text: 'Three kids, a dog, and a pool that gets hammered. Pool Pals keeps it safe and sparkling year-round. The chemical logs in the app are genuinely useful too.',
+    tag: 'Family home',
+  },
+  {
+    name: 'Bellevue Apartments',
+    suburb: 'Surfers Paradise',
+    stars: 5,
+    text: '40 apartments, one pool, zero complaints since we switched to Pool Pals. Their commercial rates are fair and the service is flawless.',
+    tag: 'Strata',
+  },
+  {
+    name: 'Tanya W.',
+    suburb: 'Palm Beach',
+    stars: 5,
+    text: 'I was skeptical about the 30-day guarantee but they honoured it without question when we had a scheduling issue in month one. Stand-up company.',
+    tag: 'Residential',
+  },
+  {
+    name: 'Gold Coast Holiday Rentals',
+    suburb: 'Multiple locations',
+    stars: 5,
+    text: 'We manage 12 properties across the Coast. Pool Pals is the only vendor we never have to chase. They just... do their job. Refreshing.',
+    tag: 'Property manager',
+  },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="pt-16 pb-12">
+    <div class="container-narrow text-center">
+      <div class="section-eyebrow eyebrow justify-center"><span class="dot"></span>Reviews</div>
+      <h1 class="font-display text-[clamp(40px,5vw,72px)] leading-[1.02] mb-4">
+        312 happy pools. <span class="text-aqua-deep italic">And counting.</span>
+      </h1>
+      <div class="flex items-center justify-center gap-2 mb-6">
+        {Array.from({ length: 5 }).map(() => (
+          <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-[var(--color-sun)]">
+            <path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18 22l-6-3.6L6 22l1.5-7.2L2 10l7.1-1.1L12 2z"/>
+          </svg>
+        ))}
+        <span class="font-display text-2xl ml-1">4.9</span>
+        <span class="text-ink-soft text-sm">average on Google</span>
+      </div>
+      <a
+        href="https://g.co/kgs/xxxxxx"
+        target="_blank"
+        rel="noopener"
+        class="btn btn-ghost"
+      >
+        Read all reviews on Google →
+      </a>
+    </div>
+  </section>
+
+  <section class="pb-24">
+    <div class="container-main">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {reviews.map((r) => (
+          <div key={r.name} class="card p-6 flex flex-col">
+            <div class="flex items-center gap-2 mb-3">
+              {Array.from({ length: r.stars }).map(() => (
+                <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-[var(--color-sun)]">
+                  <path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18 22l-6-3.6L6 22l1.5-7.2L2 10l7.1-1.1L12 2z"/>
+                </svg>
+              ))}
+            </div>
+            <p class="text-sm text-ink-soft leading-relaxed mb-4 flex-1">"{r.text}"</p>
+            <div class="flex items-center justify-between pt-4 border-t border-[var(--color-hairline)]">
+              <div>
+                <div class="text-sm font-semibold">{r.name}</div>
+                <div class="text-xs text-ink-mute">{r.suburb}</div>
+              </div>
+              <span class="text-[11px] px-2 py-1 rounded-full bg-[var(--color-bg-alt)] text-ink-soft font-medium">
+                {r.tag}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

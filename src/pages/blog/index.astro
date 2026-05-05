@@ -1,0 +1,64 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const postFiles = import.meta.glob('../../content/blog/*.md', { eager: true });
+const posts = Object.entries(postFiles).map(([path, mod]: [string, any]) => ({
+  ...mod,
+  slug: path.split('/').pop()?.replace('.md', '') || '',
+}));
+const sortedPosts = posts
+  .filter((p) => !p.frontmatter.draft)
+  .sort((a, b) => new Date(b.frontmatter.pubDate).valueOf() - new Date(a.frontmatter.pubDate).valueOf());
+
+const title = 'Pool Care Blog — Tips from Gold Coast Pool Experts | Pool Pals';
+const description = 'Expert pool maintenance tips, cost guides, and troubleshooting advice from the Gold Coast\'s most trusted pool cleaning team.';
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="pt-16 pb-12">
+    <div class="container-narrow">
+      <div class="section-eyebrow eyebrow"><span class="dot"></span>Blog</div>
+      <h1 class="font-display text-[clamp(40px,5vw,72px)] leading-[1.02] mb-6">
+        Pool wisdom. <span class="text-aqua-deep italic">No fluff.</span>
+      </h1>
+      <p class="text-lg text-ink-soft leading-relaxed max-w-[560px]">
+        Practical advice from the technicians who actually clean Gold Coast pools every day.
+        No sponsored content, no affiliate links — just what works.
+      </p>
+    </div>
+  </section>
+
+  <section class="pb-24">
+    <div class="container-narrow">
+      <div class="grid gap-8">
+        {sortedPosts.map((post) => (
+          <article class="card p-6 md:p-8 flex flex-col md:flex-row gap-6">
+            <div class="md:w-[200px] shrink-0">
+              <div class="aspect-[4/3] rounded-xl bg-aqua-soft flex items-center justify-center text-[var(--color-aqua-deep)]">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-10 h-10">
+                  <path d="M12 2.7l5.5 7.5a7 7 0 11-11 0L12 2.7z"/>
+                </svg>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex flex-wrap gap-2 mb-2">
+                {(post.frontmatter.tags || []).map((tag: string) => (
+                  <span class="text-[11px] px-2 py-0.5 rounded-full bg-[var(--color-bg-alt)] text-ink-soft font-medium">{tag}</span>
+                ))}
+              </div>
+              <h2 class="font-display text-2xl leading-tight mb-2 hover:text-[var(--color-aqua-deep)] transition-colors">
+                <a href={`/blog/${post.slug}`}>{post.frontmatter.title}</a>
+              </h2>
+              <p class="text-sm text-ink-soft leading-relaxed mb-3">{post.frontmatter.description}</p>
+              <div class="flex items-center gap-3 text-xs text-ink-mute">
+                <span>{post.frontmatter.author}</span>
+                <span>·</span>
+                <span>{new Date(post.frontmatter.pubDate).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,40 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/sections/Hero.astro';
+import LogoBar from '@/components/sections/LogoBar.astro';
+import SocialProof from '@/components/sections/SocialProof.astro';
+import Services from '@/components/sections/Services.astro';
+import HowItWorks from '@/components/sections/HowItWorks.astro';
+import Pricing from '@/components/sections/Pricing.astro';
+import Trust from '@/components/sections/Trust.astro';
+import ServiceArea from '@/components/sections/ServiceArea.astro';
+import FAQ from '@/components/sections/FAQ.astro';
+import FinalCTA from '@/components/sections/FinalCTA.astro';
+
+const title = 'Pool Pals — Gold Coast Pool Cleaning | Weekly Service from $45';
+const description = 'Reliable weekly pool cleaning across the Gold Coast. Same friendly technician, transparent pricing, all chemicals included. No contracts, no surprises. Get an instant quote in 90 seconds.';
+---
+
+<BaseLayout title={title} description={description}>
+  <Hero />
+  <LogoBar />
+  <SocialProof />
+  <Services />
+  <HowItWorks />
+  <Pricing />
+  <Trust />
+  <ServiceArea />
+  <FAQ />
+  <FinalCTA />
+</BaseLayout>
+
+<script>
+  // Wire up quote buttons to open the QuoteWizard dialog
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('[data-action="quote"]');
+    if (btn) {
+      e.preventDefault();
+      window.dispatchEvent(new CustomEvent('open-quote-wizard'));
+    }
+  });
+</script>

@@ -1,0 +1,108 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const title = 'Contact Pool Pals — Gold Coast Pool Cleaning';
+const description = 'Get in touch with Pool Pals for quotes, questions, or emergency pool help. Call 1300 POOL PAL, email hello@poolpals.com.au, or fill out the form.';
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="pt-16 pb-12">
+    <div class="container-narrow">
+      <div class="section-eyebrow eyebrow"><span class="dot"></span>Contact</div>
+      <h1 class="font-display text-[clamp(40px,5vw,72px)] leading-[1.02] mb-6">
+        Let's <span class="text-aqua-deep italic">talk pools.</span>
+      </h1>
+      <p class="text-lg text-ink-soft leading-relaxed max-w-[560px] mb-12">
+        Quotes, questions, emergencies, or just want to say g'day. We're here Monday–Saturday,
+        7am–6pm. Real humans, real fast.
+      </p>
+    </div>
+  </section>
+
+  <section class="pb-24">
+    <div class="container-narrow">
+      <div class="grid md:grid-cols-[1fr_1.2fr] gap-12">
+        <!-- Contact info -->
+        <div class="space-y-8">
+          <div>
+            <h2 class="font-display text-xl mb-3">Phone</h2>
+            <a href="tel:1300766572" class="text-2xl font-display text-[var(--color-aqua-deep)] hover:underline">
+              1300 POOL PAL
+            </a>
+            <p class="text-sm text-ink-soft mt-1">Mon–Sat, 7am–6pm</p>
+          </div>
+          <div>
+            <h2 class="font-display text-xl mb-3">Email</h2>
+            <a href="mailto:hello@poolpals.com.au" class="text-lg text-ink hover:underline">
+              hello@poolpals.com.au
+            </a>
+          </div>
+          <div>
+            <h2 class="font-display text-xl mb-3">Office</h2>
+            <p class="text-ink-soft">
+              14/110 Mountain View Ave<br />
+              Miami QLD 4220<br />
+              <span class="text-sm text-ink-mute">(By appointment — we're usually out on pools)</span>
+            </p>
+          </div>
+          <div>
+            <h2 class="font-display text-xl mb-3">Service area</h2>
+            <p class="text-ink-soft">
+              All Gold Coast suburbs from Coolangatta to Hope Island.
+              <a href="/#service-area" class="underline underline-offset-[3px] ml-1">See full list →</a>
+            </p>
+          </div>
+          <div class="p-5 rounded-[14px] bg-[var(--color-bg-alt)]">
+            <h3 class="font-semibold mb-2">Emergency?</h3>
+            <p class="text-sm text-ink-soft mb-3">
+              Green pool, broken pump, or chemical burn? Crystal and Concierge plans include
+              same-day emergency response.
+            </p>
+            <a href="tel:1300766572" class="btn btn-aqua btn-sm">
+              Call 1300 POOL PAL
+            </a>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <form class="card p-8 space-y-5" action="/api/quote" method="POST">
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-sm font-medium mb-1.5" for="c-name">Name</label>
+              <input id="c-name" name="name" type="text" required class="w-full rounded-xl border border-[var(--color-hairline)] px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-aqua)]/30 focus:border-[var(--color-aqua)] transition-all bg-[var(--color-bg)]" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1.5" for="c-phone">Phone</label>
+              <input id="c-phone" name="phone" type="tel" required class="w-full rounded-xl border border-[var(--color-hairline)] px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-aqua)]/30 focus:border-[var(--color-aqua)] transition-all bg-[var(--color-bg)]" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1.5" for="c-email">Email</label>
+            <input id="c-email" name="email" type="email" required class="w-full rounded-xl border border-[var(--color-hairline)] px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-aqua)]/30 focus:border-[var(--color-aqua)] transition-all bg-[var(--color-bg)]" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1.5" for="c-subject">Subject</label>
+            <select id="c-subject" name="subject" class="w-full rounded-xl border border-[var(--color-hairline)] px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-aqua)]/30 focus:border-[var(--color-aqua)] transition-all bg-[var(--color-bg)]">
+              <option>Quote request</option>
+              <option>General question</option>
+              <option>Emergency / rescue</option>
+              <option>Feedback</option>
+              <option>Partnership</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1.5" for="c-message">Message</label>
+            <textarea id="c-message" name="message" rows={5} required class="w-full rounded-xl border border-[var(--color-hairline)] px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-aqua)]/30 focus:border-[var(--color-aqua)] transition-all bg-[var(--color-bg)] resize-none"
+              placeholder="Tell us about your pool, your suburb, and what you need..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-aqua w-full justify-center">
+            Send message
+          </button>
+          <p class="text-xs text-ink-mute text-center">
+            We'll reply within 4 business hours. For emergencies, please call 1300 766 572.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

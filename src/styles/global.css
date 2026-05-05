@@ -1,0 +1,292 @@
+@import "tailwindcss";
+@import "@fontsource/instrument-serif/400.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* Pool Pals Custom Colors */
+  --color-bg: oklch(0.985 0.005 95);
+  --color-bg-alt: oklch(0.965 0.008 210);
+  --color-bg-deep: oklch(0.22 0.04 230);
+  --color-ink: oklch(0.22 0.02 240);
+  --color-ink-soft: oklch(0.42 0.02 240);
+  --color-ink-mute: oklch(0.58 0.015 240);
+  --color-hairline: oklch(0.88 0.01 230);
+  --color-hairline-soft: oklch(0.93 0.008 230);
+  --color-aqua: oklch(0.62 0.13 215);
+  --color-aqua-deep: oklch(0.48 0.13 220);
+  --color-aqua-soft: oklch(0.92 0.04 210);
+  --color-sun: oklch(0.78 0.13 75);
+  --color-sun-soft: oklch(0.95 0.05 80);
+  --color-success: oklch(0.62 0.14 150);
+
+  /* Pool Pals Fonts */
+  --font-display: "Instrument Serif", "Times New Roman", serif;
+  --font-ui: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Pool Pals Radii */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-full: 999px;
+
+  /* Pool Pals Shadows */
+  --shadow-sm: 0 1px 2px rgba(20, 40, 70, 0.04), 0 2px 6px rgba(20, 40, 70, 0.04);
+  --shadow-md: 0 4px 12px rgba(20, 40, 70, 0.06), 0 12px 32px rgba(20, 40, 70, 0.05);
+  --shadow-lg: 0 10px 30px rgba(20, 40, 70, 0.08), 0 24px 60px rgba(20, 40, 70, 0.08);
+
+  /* Animations */
+  --animate-pulse-dot: pulse-dot 1.8s infinite;
+  --animate-fade-up: fade-up 0.6s ease both;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 oklch(0.62 0.14 150 / 0.5); }
+  50% { box-shadow: 0 0 0 6px oklch(0.62 0.14 150 / 0); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-ui);
+    color: var(--color-ink);
+    background: var(--color-bg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+@theme inline {
+  --font-heading: var(--font-display);
+  --font-sans: var(--font-ui);
+  --font-mono: var(--font-mono);
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-ink);
+  --color-card: var(--color-bg);
+  --color-card-foreground: var(--color-ink);
+  --color-popover: var(--color-bg);
+  --color-popover-foreground: var(--color-ink);
+  --color-primary: var(--color-ink);
+  --color-primary-foreground: var(--color-bg);
+  --color-secondary: var(--color-bg-alt);
+  --color-secondary-foreground: var(--color-ink);
+  --color-muted: var(--color-bg-alt);
+  --color-muted-foreground: var(--color-ink-soft);
+  --color-accent: var(--color-aqua-soft);
+  --color-accent-foreground: var(--color-aqua-deep);
+  --color-destructive: oklch(0.577 0.245 27.325);
+  --color-border: var(--color-hairline);
+  --color-input: var(--color-hairline);
+  --color-ring: var(--color-aqua);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+}
+
+/* Utility classes for Pool Pals design system */
+@layer utilities {
+  .container-main {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .container-narrow {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .text-ink-soft {
+    color: var(--color-ink-soft);
+  }
+
+  .text-ink-mute {
+    color: var(--color-ink-mute);
+  }
+
+  .text-aqua-deep {
+    color: var(--color-aqua-deep);
+  }
+
+  .bg-aqua-soft {
+    background-color: var(--color-aqua-soft);
+  }
+
+  .border-hairline {
+    border-color: var(--color-hairline);
+  }
+
+  .shadow-pp-sm {
+    box-shadow: var(--shadow-sm);
+  }
+
+  .shadow-pp-md {
+    box-shadow: var(--shadow-md);
+  }
+
+  .shadow-pp-lg {
+    box-shadow: var(--shadow-lg);
+  }
+
+  .pill-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: oklch(0.96 0.02 215);
+    border: 1px solid var(--color-hairline);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-ink-soft);
+  }
+
+  .live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-success);
+    animation: pulse-dot 1.8s infinite;
+  }
+
+  .section-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .section-eyebrow .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-aqua);
+  }
+
+  /* Background colors */
+  .bg-cream {
+    background-color: var(--color-bg);
+  }
+
+  /* Cards */
+  .card {
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    padding: 12px 24px;
+    border-radius: 999px;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn:active {
+    transform: translateY(0);
+  }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Button sizes */
+  .btn-sm {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .btn-lg {
+    padding: 16px 32px;
+    font-size: 15px;
+  }
+
+  /* Button variants */
+  .btn-aqua {
+    background-color: var(--color-aqua);
+    color: white;
+    border-color: var(--color-aqua);
+  }
+
+  .btn-aqua:hover {
+    background-color: var(--color-aqua-deep);
+    border-color: var(--color-aqua-deep);
+  }
+
+  .btn-primary {
+    background-color: var(--color-ink);
+    color: var(--color-bg);
+    border-color: var(--color-ink);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-ink-soft);
+    border-color: var(--color-ink-soft);
+  }
+
+  .btn-ghost {
+    background-color: transparent;
+    color: var(--color-ink);
+    border-color: var(--color-hairline);
+  }
+
+  .btn-ghost:hover {
+    background-color: var(--color-bg-alt);
+    border-color: var(--color-hairline);
+  }
+
+  /* Shadcn dialog/sheet overlay fixes for light theme */
+  [data-slot="sheet-overlay"],
+  [data-slot="dialog-overlay"] {
+    background-color: rgba(0, 0, 0, 0.25) !important;
+  }
+
+  [data-slot="sheet-content"],
+  [data-slot="dialog-content"] {
+    background-color: var(--color-bg) !important;
+    color: var(--color-ink) !important;
+  }
+}

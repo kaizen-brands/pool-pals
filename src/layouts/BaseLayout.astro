@@ -1,0 +1,80 @@
+---
+import { localBusinessSchema } from '@/lib/schema';
+import '@/styles/global.css';
+import { Nav } from '@/components/shared/Nav';
+import { Footer } from '@/components/shared/Footer';
+import { QuoteWizard } from '@/components/islands/QuoteWizard';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = 'Pool Pals — Gold Coast Pool Cleaning. Reliable, friendly, sparkling.',
+  description = 'Reliable weekly pool cleaning across the Gold Coast — same friendly technician, transparent pricing, and a sparkling pool every Friday. No contracts, no surprises.',
+  ogImage = '/images/og-default.jpg',
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site || 'https://poolpals.com.au').toString();
+const schema = localBusinessSchema();
+---
+
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={new URL(ogImage, Astro.site || 'https://poolpals.com.au').toString()} />
+  <meta property="og:locale" content="en_AU" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={new URL(ogImage, Astro.site || 'https://poolpals.com.au').toString()} />
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</head>
+<body>
+  <Nav client:load />
+  <main>
+    <slot />
+  </main>
+  <Footer />
+  <QuoteWizard client:load />
+
+  <script is:inline>
+    // Global event bus for opening quote wizard from anywhere
+    let quoteOpen = false;
+    window.addEventListener('open-quote-wizard', () => {
+      quoteOpen = true;
+      document.dispatchEvent(new CustomEvent('quote-wizard-open', { detail: true }));
+    });
+    document.addEventListener('quote-wizard-state', (e) => {
+      quoteOpen = e.detail;
+    });
+  </script>
+</body>
+</html>

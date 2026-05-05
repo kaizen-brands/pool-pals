@@ -1,0 +1,60 @@
+---
+const steps = [
+  {
+    n: '01',
+    title: 'Get a quote',
+    desc: 'Tell us a bit about your pool — takes about 90 seconds. Instant estimate, no email gate.',
+    time: '≈ 90 sec',
+  },
+  {
+    n: '02',
+    title: 'We clean',
+    desc: "We arrive on the same day each week. You don't need to be home. We send a photo report when we're done.",
+    time: 'Weekly',
+  },
+  {
+    n: '03',
+    title: 'You enjoy',
+    desc: 'Crystal-clear water, balanced chemicals, working equipment. The way owning a pool is supposed to feel.',
+    time: 'Forever',
+  },
+];
+---
+
+<section id="how-it-works" class="bg-[var(--color-bg-deep)] text-white py-24 relative overflow-hidden">
+  <div class="absolute inset-0 opacity-40"
+    style="background: radial-gradient(ellipse 60% 60% at 80% 20%, oklch(0.62 0.13 215 / 0.5), transparent 60%);">
+  </div>
+
+  <div class="container-main relative">
+    <div class="section-eyebrow eyebrow !text-[oklch(0.78_0.13_215)]">
+      <span class="dot !bg-[var(--color-aqua)]"></span> The Pool Pals way
+    </div>
+
+    <h2 class="font-display text-[clamp(36px,4.5vw,60px)] leading-none mb-16 max-w-[720px]">
+      Three steps. <span class="text-[oklch(0.78_0.13_215)] italic">That's the whole pitch.</span>
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-6 relative">
+      <!-- Connector line -->
+      <div class="absolute top-[30px] left-[16%] right-[16%] h-px hidden md:block"
+        style="background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);">
+      </div>
+
+      {steps.map((s) => (
+        <div key={s.n} class="relative">
+          <div class="w-[60px] h-[60px] rounded-full flex items-center justify-center font-display text-[22px] mb-6 relative z-10"
+            style="background: oklch(0.32 0.06 230); border: 1px solid oklch(0.5 0.1 220);">
+            {s.n}
+          </div>
+          <h3 class="font-display text-[30px] leading-none mb-2.5">{s.title}</h3>
+          <p class="text-[oklch(0.78_0.02_230)] text-[15px] leading-relaxed mb-4">{s.desc}</p>
+          <span class="inline-flex items-center gap-1.5 font-mono text-[11px] tracking-widest text-[oklch(0.78_0.13_215)] uppercase">
+            <span class="w-1 h-1 bg-current rounded-full"></span>
+            {s.time}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

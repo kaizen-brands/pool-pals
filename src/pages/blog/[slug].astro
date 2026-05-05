@@ -1,0 +1,56 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const postFiles = import.meta.glob('../../content/blog/*.md', { eager: true });
+  return Object.entries(postFiles).map(([path, mod]: [string, any]) => {
+    const slug = path.split('/').pop()?.replace('.md', '') || '';
+    return {
+      params: { slug },
+      props: { post: mod },
+    };
+  });
+}
+
+const { post } = Astro.props;
+const { Content } = post;
+
+const title = `${post.frontmatter.title} | Pool Pals Blog`;
+const description = post.frontmatter.description;
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="pt-16 pb-24">
+    <div class="container-narrow">
+      <div class="mb-10">
+        <div class="flex flex-wrap gap-2 mb-4">
+          {(post.frontmatter.tags || []).map((tag: string) => (
+            <span class="text-[11px] px-2.5 py-1 rounded-full bg-[var(--color-bg-alt)] text-ink-soft font-medium">{tag}</span>
+          ))}
+        </div>
+        <h1 class="font-display text-[clamp(32px,4vw,56px)] leading-[1.05] mb-4">{post.frontmatter.title}</h1>
+        <div class="flex items-center gap-3 text-sm text-ink-soft">
+          <span class="font-medium text-ink">{post.frontmatter.author}</span>
+          <span>·</span>
+          <span>{new Date(post.frontmatter.pubDate).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+          {post.frontmatter.updatedDate && (
+            <>
+              <span>·</span>
+              <span>Updated {new Date(post.frontmatter.updatedDate).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+            </>
+          )}
+        </div>
+      </div>
+
+      <div class="prose prose-lg max-w-none">
+        <Content />
+      </div>
+
+      <div class="mt-16 pt-8 border-t border-[var(--color-hairline)]">
+        <h3 class="font-display text-xl mb-4">Need help with your pool?</h3>
+        <p class="text-ink-soft mb-4">Our technicians are on the Gold Coast every day. Get a free quote in 90 seconds.</p>
+        <button class="btn btn-aqua" data-action="quote">Get instant quote</button>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

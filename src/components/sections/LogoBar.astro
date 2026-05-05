@@ -1,0 +1,15 @@
+---
+const items = [
+  'As seen on Gold Coast Bulletin',
+  'Top 10 Local Pool Cleaner — 2024',
+  'Featured · @goldcoastliving',
+  'Member · SPASA Australia',
+  'Google Guaranteed',
+];
+---
+
+<div class="border-y border-[var(--color-hairline)] bg-[var(--color-bg-alt)] py-5">
+  <div class="container-main flex justify-between gap-8 items-center flex-wrap font-mono text-[11px] uppercase tracking-widest text-ink-mute overflow-x-auto whitespace-nowrap">
+    {items.map((it) => <span class="shrink-0" key={it}>{it}</span>)}
+  </div>
+</div>

@@ -1,0 +1,114 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const title = 'Pool Cleaning Services — Gold Coast | Pool Pals';
+const description = 'Weekly pool cleaning, chemical balancing, equipment checks, and green pool recovery across the Gold Coast. All chemicals included. No contracts.';
+
+const services = [
+  {
+    title: 'Weekly pool cleaning',
+    price: 'from $45/visit',
+    features: [
+      'Skim surface debris',
+      'Brush walls and floor',
+      'Vacuum pool bottom',
+      'Empty skimmer and pump baskets',
+      'Backwash filter (as needed)',
+      'Check equipment operation',
+      'Photo report after each visit',
+    ],
+    detail: 'Our bread and butter. Every visit follows a 22-point checklist developed over 9 years and 70,000+ cleans. Your technician arrives the same day, same time — you set the schedule.',
+  },
+  {
+    title: 'Chemical balancing',
+    price: 'included in all plans',
+    features: [
+      '6-point water test (pH, chlorine, alkalinity, calcium, stabiliser, salt)',
+      'On-the-spot chemical adjustment',
+      'Salt cell inspection',
+      'Logged in your customer dashboard',
+      'Seasonal adjustment protocols',
+    ],
+    detail: "We don't guess. Every visit includes lab-grade testing with digital meters. Your water chemistry is logged and trended — we spot problems before they become green pools.",
+  },
+  {
+    title: 'Equipment health checks',
+    price: 'included quarterly',
+    features: [
+      'Pump pressure and flow rate',
+      'Filter condition assessment',
+      'Chlorinator cell output',
+      'Heater efficiency check',
+      'Valve and plumbing inspection',
+      'Parts quote if needed (trade pricing)',
+    ],
+    detail: 'Small problems become big bills. Our quarterly equipment audit catches worn seals, declining pressure, and early chlorinator failure — typically saving $400–$1,200 in emergency repairs.',
+  },
+  {
+    title: 'Green pool recovery',
+    price: 'from $129 flat fee',
+    features: [
+      'Full water analysis and diagnosis',
+      'Shock treatment and flocculant',
+      'Intensive filter running schedule',
+      'Daily progress monitoring (3–5 days)',
+      'No-recovery, no-charge guarantee',
+    ],
+    detail: "Storm hit? Pool neglected? Pump failed while you were overseas? Most green pools are fully clear within 3–5 days. We fix the water and the root cause — so it doesn't happen again.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="pt-16 pb-12">
+    <div class="container-narrow">
+      <div class="section-eyebrow eyebrow"><span class="dot"></span>Services</div>
+      <h1 class="font-display text-[clamp(40px,5vw,72px)] leading-[1.02] mb-6">
+        Everything your pool <span class="text-aqua-deep italic">needs.</span>
+      </h1>
+      <p class="text-lg text-ink-soft leading-relaxed max-w-[640px] mb-12">
+        Four services. One team. No upsells, no bait-and-switch, no "while I'm here" surprises.
+        Honest work for the people who actually live with the pool.
+      </p>
+    </div>
+  </section>
+
+  <section class="pb-24">
+    <div class="container-narrow">
+      <div class="grid gap-8">
+        {services.map((s, i) => (
+          <div key={s.title} class="card p-8 md:p-10">
+            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-5">
+              <div>
+                <h2 class="font-display text-[28px] leading-tight mb-1">{s.title}</h2>
+                <span class="text-sm font-medium text-[var(--color-aqua-deep)]">{s.price}</span>
+              </div>
+              <button class="btn btn-primary btn-sm shrink-0" data-action="quote">
+                Get a quote
+              </button>
+            </div>
+            <p class="text-ink-soft leading-relaxed mb-5 max-w-[720px]">{s.detail}</p>
+            <ul class="grid sm:grid-cols-2 gap-2.5">
+              {s.features.map((f) => (
+                <li key={f} class="flex items-start gap-2.5 text-sm text-ink-soft">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 text-[var(--color-success)] shrink-0 mt-0.5">
+                    <path d="M4 12.5l5 5L20 6.5"/>
+                  </svg>
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <!-- CTA -->
+      <div class="mt-12 text-center">
+        <p class="text-ink-soft mb-4">Not sure which service you need?</p>
+        <button class="btn btn-aqua" data-action="quote">
+          Get a free recommendation
+        </button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
