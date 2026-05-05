@@ -30,6 +30,7 @@
   --color-sun: oklch(0.78 0.13 75);
   --color-sun-soft: oklch(0.95 0.05 80);
   --color-success: oklch(0.62 0.14 150);
+  --color-deep: oklch(0.22 0.04 230);
 
   /* Pool Pals Fonts */
   --font-display: "Bricolage Grotesque", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;

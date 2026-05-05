@@ -1,122 +1,102 @@
 ---
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Check, Shield, ArrowRight } from 'lucide-react';
+
 const tiers = [
   {
     name: 'Splash',
-    tag: 'For low-use pools',
     price: 45,
-    cadence: '/visit',
-    freq: 'Fortnightly visit',
-    features: [
-      'Skim, brush, vacuum',
-      'Basic water test (4-point)',
-      'Empty skimmer & pump baskets',
-      'Photo report',
-    ],
-    cta: 'Start Splash',
-    highlight: false,
+    freq: 'per visit · fortnightly',
+    tag: null,
+    desc: 'For pools that just need to stay swim-ready. The basics, done right, every week.',
+    features: ['30-min visit', 'Skim, brush, vacuum', 'Basic water test (5 markers)', 'Chemical top-up', 'Email log after every visit'],
+    cta: 'Choose Splash',
+    featured: false,
   },
   {
     name: 'Crystal',
-    tag: 'Most Gold Coast homes',
     price: 55,
-    cadence: '/visit',
-    freq: 'Weekly visit',
-    features: [
-      'Everything in Splash',
-      'Full 6-point water test',
-      'All chemicals included',
-      'Equipment health check (quarterly)',
-      'Priority storm cleanup',
-    ],
-    cta: 'Start Crystal',
-    highlight: true,
+    freq: 'per visit · weekly',
+    tag: 'Most popular',
+    desc: 'Our most popular plan. Everything in Splash + the deeper diagnostics most pools need on the Coast.',
+    features: ['45-min visit', 'Everything in Splash', '11-point water test', 'Salt cell + pump check', 'Phosphate dosing included', 'Priority booking + same-week call-outs'],
+    cta: 'Choose Crystal',
+    featured: true,
   },
   {
     name: 'Concierge',
-    tag: 'Holiday rentals & big pools',
     price: 89,
-    cadence: '/visit',
-    freq: 'Twice weekly',
-    features: [
-      'Everything in Crystal',
-      'Twice-weekly visits',
-      'Same-day rescue calls',
-      'Guest-ready turnaround',
-      'Direct line to your tech',
-    ],
+    freq: 'per visit · twice weekly',
+    tag: 'Concierge',
+    desc: 'White-glove service for show-home pools, holiday rentals, and pools that get a lot of attention.',
+    features: ['60-min visit', 'Everything in Crystal', 'Tile & waterline scrub', 'Filter deep-clean (monthly)', 'Equipment performance report (quarterly)', 'Same-day call-out included'],
     cta: 'Talk to us',
-    highlight: false,
+    featured: false,
   },
 ];
 ---
 
 <section id="pricing" class="py-24">
-  <div class="container-main">
-    <div class="text-center mb-14">
-      <div class="section-eyebrow eyebrow justify-center"><span class="dot"></span>Transparent pricing</div>
-      <h2 class="font-display text-[clamp(36px,4.5vw,60px)] leading-none mb-[18px]">
-        One price. <span class="text-aqua-deep italic">No surprises.</span>
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="max-w-3xl space-y-4 mb-12 mx-auto text-center">
+      <div class="flex items-center justify-center gap-2 text-xs font-mono uppercase tracking-widest text-aqua">
+        <span class="h-px w-8 bg-aqua"></span>
+        Pricing
+      </div>
+      <h2 class="font-display text-4xl md:text-5xl font-semibold text-deep">
+        Simple plans. Real prices.
       </h2>
-      <p class="text-[17px] text-ink-soft max-w-[540px] mx-auto">
-        Chemicals, labour, and reporting all included. Cancel anytime — we'll never lock you in.
+      <p class="text-lg text-ink-soft leading-relaxed">
+        No callout fees. No "depends on the day." Cancel any time with 14 days' notice.
       </p>
     </div>
 
-    <div class="grid md:grid-cols-3 gap-5 items-stretch">
+    <div class="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
       {tiers.map((t) => (
-        <div key={t.name} class={`relative rounded-[18px] p-8 flex flex-col ${t.highlight ? 'bg-[var(--color-ink)] text-white shadow-pp-lg' : 'bg-[var(--color-bg)] text-[var(--color-ink)] border border-[var(--color-hairline)]'}`}>
-          {t.highlight && (
-            <span class="absolute -top-3 left-8 bg-[var(--color-sun)] text-[var(--color-ink)] text-[11px] font-semibold px-3 py-1.5 rounded-full tracking-wide">
-              MOST POPULAR
-            </span>
+        <div key={t.name} class={`relative rounded-xl border bg-card text-card-foreground shadow-sm flex flex-col p-6 ${t.featured ? 'border-aqua border-2 shadow-xl scale-[1.02]' : ''}`}>
+          {t.tag && (
+            <Badge class={`absolute -top-3 left-1/2 -translate-x-1/2 ${t.featured ? 'bg-aqua text-white' : 'bg-deep text-white'}`}>
+              {t.tag}
+            </Badge>
           )}
-          <div class="flex justify-between items-start mb-2">
-            <h3 class="font-display text-[32px] leading-none">{t.name}</h3>
+          <div class="mb-4">
+            <h3 class="font-display text-2xl text-deep font-semibold">{t.name}</h3>
+            <p class="text-ink-soft text-sm leading-relaxed pt-1">{t.desc}</p>
+            <div class="pt-4 flex items-baseline gap-1.5">
+              <span class="font-display text-5xl font-semibold text-deep">${t.price}</span>
+              <span class="text-sm text-ink-mute">{t.freq}</span>
+            </div>
           </div>
-          <div class={`text-sm mb-6 ${t.highlight ? 'opacity-70' : ''}`}>{t.tag}</div>
-          <div class="flex items-baseline gap-1 mb-1.5">
-            <span class="font-display text-[56px] leading-none tabular-nums">${t.price}</span>
-            <span class={`text-sm ${t.highlight ? 'opacity-70' : ''}`}>{t.cadence}</span>
+          <div class="flex-1">
+            <div class="h-px w-full bg-border mb-5"></div>
+            <ul class="space-y-3">
+              {t.features.map((f) => (
+                <li key={f} class="flex items-start gap-2.5 text-sm text-ink-soft">
+                  <Check className="h-4 w-4 text-success mt-0.5 shrink-0" />
+                  {f}
+                </li>
+              ))}
+            </ul>
           </div>
-          <div class={`text-xs font-mono tracking-widest uppercase mb-7 ${t.highlight ? 'opacity-70' : ''}`}>{t.freq}</div>
-          <button
-            data-action="quote"
-            class={`btn w-full justify-center mb-7 ${t.highlight ? 'btn-aqua' : 'btn-primary'}`}
-          >
-            {t.cta}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
-              <path d="M5 12h14M13 5l7 7-7 7"/>
-            </svg>
-          </button>
-          <ul class="grid gap-3">
-            {t.features.map((f) => (
-              <li key={f} class="flex items-start gap-2.5 text-sm leading-snug">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class={`w-4 h-4 shrink-0 mt-0.5 ${t.highlight ? 'text-[var(--color-sun)]' : 'text-[var(--color-success)]'}`}>
-                  <path d="M4 12.5l5 5L20 6.5"/>
-                </svg>
-                <span class={t.highlight ? 'opacity-90' : ''}>{f}</span>
-              </li>
-            ))}
-          </ul>
+          <div class="mt-6">
+            <Button
+              data-action="quote"
+              variant={t.featured ? 'default' : 'outline'}
+              className="w-full"
+              size="lg"
+            >
+              {t.cta}
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       ))}
     </div>
 
-    <!-- Guarantee banner -->
-    <div class="mt-8 p-5 rounded-[14px] flex gap-4 items-center justify-between flex-wrap"
-      style="background: var(--color-sun-soft); border: 1px solid oklch(0.85 0.08 80);">
-      <div class="flex gap-3.5 items-center">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-[22px] h-[22px] shrink-0" style="color: oklch(0.55 0.15 75);">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        </svg>
-        <div>
-          <div class="text-sm font-semibold">30-day satisfaction guarantee</div>
-          <div class="text-sm text-ink-soft">Not happy after your first month? We'll refund every cent — no questions, no hard feelings.</div>
-        </div>
-      </div>
-      <a href="#faq" class="text-sm font-medium underline underline-offset-4 shrink-0">
-        Read the fine print →
-      </a>
+    <div class="mt-10 flex items-center justify-center gap-2 text-sm text-ink-mute">
+      <Shield className="h-4 w-4" />
+      All plans include public liability insurance ($20M) and a 14-day satisfaction guarantee
     </div>
   </div>
 </section>

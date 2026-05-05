@@ -1,0 +1,47 @@
+---
+import { Star } from 'lucide-react';
+
+const reviews = [
+  { name: 'Sarah M.', suburb: 'Mermaid Beach', rating: 5, text: 'Switched from another mob after 3 years of "she\'ll be right" service. Pool Pals do it properly. Photo log after every visit, water\'s never been clearer.', date: '2 weeks ago' },
+  { name: 'James & Pip', suburb: 'Burleigh Heads', rating: 5, text: 'Took on our green pool after a tenant left. Quoted $290, fixed in 4 days, took before/after photos for the bond claim. Couldn\'t fault them.', date: '1 month ago' },
+  { name: 'Renate K.', suburb: 'Broadbeach Waters', rating: 5, text: 'Same tech every fortnight for 18 months — Damo knows our pump, our quirks, even the dog. That\'s what real service looks like.', date: '6 weeks ago' },
+];
+---
+
+<section class="py-24 bg-deep text-white relative overflow-hidden">
+  <div class="absolute inset-0 -z-10">
+    <div class="absolute -left-32 top-0 h-[500px] w-[500px] rounded-full bg-aqua/20 blur-3xl"></div>
+    <div class="absolute -right-32 bottom-0 h-[400px] w-[400px] rounded-full bg-aqua-deep/30 blur-3xl"></div>
+  </div>
+
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="max-w-3xl mb-12 space-y-4">
+      <div class="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-aqua-soft/80">
+        <span class="h-px w-8 bg-aqua-soft/60"></span>
+        Word from the Coast
+      </div>
+      <h2 class="font-display text-4xl md:text-5xl font-semibold">Locals who don't have to think about their pool anymore</h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      {reviews.map((r) => (
+        <div key={r.name} class="rounded-xl bg-white/5 border border-white/10 p-6 backdrop-blur-sm">
+          <div class="flex items-center gap-0.5 mb-4">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Star key={i} className="h-4 w-4 fill-sun text-sun" />
+            ))}
+          </div>
+          <p class="text-base leading-relaxed mb-5">"{r.text}"</p>
+          <div class="h-px w-full bg-white/10 mb-4"></div>
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="font-medium">{r.name}</div>
+              <div class="text-sm text-aqua-soft/70">{r.suburb}</div>
+            </div>
+            <div class="text-xs text-aqua-soft/50">{r.date}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

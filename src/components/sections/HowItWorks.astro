@@ -1,58 +1,46 @@
 ---
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { ArrowRight } from 'lucide-react';
+
 const steps = [
-  {
-    n: '01',
-    title: 'Get a quote',
-    desc: 'Tell us a bit about your pool — takes about 90 seconds. Instant estimate, no email gate.',
-    time: '≈ 90 sec',
-  },
-  {
-    n: '02',
-    title: 'We clean',
-    desc: "We arrive on the same day each week. You don't need to be home. We send a photo report when we're done.",
-    time: 'Weekly',
-  },
-  {
-    n: '03',
-    title: 'You enjoy',
-    desc: 'Crystal-clear water, balanced chemicals, working equipment. The way owning a pool is supposed to feel.',
-    time: 'Forever',
-  },
+  { n: '01', title: 'Get a quote in 60 seconds', body: 'Tell us your pool size, suburb, and how often. We\'ll give you a fixed price — no callout fee, no "depends on the day".' },
+  { n: '02', title: 'We schedule your tech', body: 'You get the same tech every visit. They\'ll send an SMS the night before with their ETA window — usually 90 minutes wide, not all day.' },
+  { n: '03', title: 'Photo log after every visit', body: 'Skimming, vacuuming, water test results, chemicals dosed, photos of the pool clean. Emailed before they leave the driveway.' },
 ];
 ---
 
-<section id="how-it-works" class="bg-[var(--color-bg-deep)] text-white py-24 relative overflow-hidden">
-  <div class="absolute inset-0 opacity-40"
-    style="background: radial-gradient(ellipse 60% 60% at 80% 20%, oklch(0.62 0.13 215 / 0.5), transparent 60%);">
-  </div>
-
-  <div class="container-main relative">
-    <div class="section-eyebrow eyebrow !text-[oklch(0.78_0.13_215)]">
-      <span class="dot !bg-[var(--color-aqua)]"></span> The Pool Pals way
+<section id="how-it-works" class="py-24 bg-gradient-to-b from-background to-aqua-soft/30">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="max-w-3xl space-y-4 mb-12">
+      <div class="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-aqua">
+        <span class="h-px w-8 bg-aqua"></span>
+        How it works
+      </div>
+      <h2 class="font-display text-4xl md:text-5xl font-semibold text-deep">
+        From quote to crystal-clear in a week
+      </h2>
+      <p class="text-lg text-ink-soft leading-relaxed">
+        No "we'll get back to you," no surprise callout fees. Three steps and you're sorted.
+      </p>
     </div>
 
-    <h2 class="font-display text-[clamp(36px,4.5vw,60px)] leading-none mb-16 max-w-[720px]">
-      Three steps. <span class="text-[oklch(0.78_0.13_215)] italic">That's the whole pitch.</span>
-    </h2>
-
-    <div class="grid md:grid-cols-3 gap-6 relative">
-      <!-- Connector line -->
-      <div class="absolute top-[30px] left-[16%] right-[16%] h-px hidden md:block"
-        style="background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);">
-      </div>
-
-      {steps.map((s) => (
+    <div class="grid md:grid-cols-3 gap-6">
+      {steps.map((s, i) => (
         <div key={s.n} class="relative">
-          <div class="w-[60px] h-[60px] rounded-full flex items-center justify-center font-display text-[22px] mb-6 relative z-10"
-            style="background: oklch(0.32 0.06 230); border: 1px solid oklch(0.5 0.1 220);">
-            {s.n}
-          </div>
-          <h3 class="font-display text-[30px] leading-none mb-2.5">{s.title}</h3>
-          <p class="text-[oklch(0.78_0.02_230)] text-[15px] leading-relaxed mb-4">{s.desc}</p>
-          <span class="inline-flex items-center gap-1.5 font-mono text-[11px] tracking-widest text-[oklch(0.78_0.13_215)] uppercase">
-            <span class="w-1 h-1 bg-current rounded-full"></span>
-            {s.time}
-          </span>
+          <Card className="h-full">
+            <CardHeader>
+              <div class="font-mono text-sm text-aqua font-semibold mb-3">{s.n}</div>
+              <CardTitle class="font-display text-2xl text-deep leading-tight">{s.title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p class="text-ink-soft leading-relaxed">{s.body}</p>
+            </CardContent>
+          </Card>
+          {i < steps.length - 1 && (
+            <div class="hidden md:flex absolute top-12 -right-3 z-10 h-6 w-6 items-center justify-center rounded-full bg-background border border-border shadow-sm">
+              <ArrowRight className="h-3 w-3 text-aqua" />
+            </div>
+          )}
         </div>
       ))}
     </div>

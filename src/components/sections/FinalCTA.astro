@@ -1,43 +1,30 @@
-<section id="cta" class="py-[120px] relative overflow-hidden">
-  <div class="absolute inset-5 rounded-[32px] z-0"
-    style="background: linear-gradient(140deg, oklch(0.62 0.13 215), oklch(0.4 0.13 225));">
-    <svg viewBox="0 0 1200 600" preserveAspectRatio="none" class="w-full h-full">
-      <defs>
-        <pattern id="ctaCaustic" x="0" y="0" width="160" height="160" patternUnits="userSpaceOnUse">
-          <path d="M10 60 Q40 40 80 60 T150 60" stroke="white" stroke-width="1.4" fill="none" opacity="0.18"/>
-          <path d="M0 100 Q35 80 70 100 T160 100" stroke="white" stroke-width="1" fill="none" opacity="0.12"/>
-        </pattern>
-      </defs>
-      <rect width="1200" height="600" fill="url(#ctaCaustic)" />
+<section class="py-20 bg-gradient-to-br from-aqua to-aqua-deep text-white relative overflow-hidden">
+  <div class="absolute inset-0 -z-10">
+    <svg class="absolute inset-0 h-full w-full opacity-20" viewBox="0 0 1200 400" preserveAspectRatio="none">
+      <path d="M0,200 Q300,120 600,200 T1200,200 L1200,400 L0,400 Z" fill="white" opacity="0.3"/>
+      <path d="M0,260 Q300,180 600,260 T1200,260 L1200,400 L0,400 Z" fill="white" opacity="0.2"/>
     </svg>
   </div>
-
-  <div class="container-main relative z-10 text-white text-center">
-    <h2 class="font-display text-[clamp(40px,6vw,84px)] leading-[1.02] mb-6">
-      Get your pool back.<br />
-      <span class="italic opacity-90">Keep it that way.</span>
+  <div class="mx-auto max-w-5xl px-6 text-center space-y-8">
+    <h2 class="font-display text-4xl md:text-5xl font-semibold leading-tight">
+      Ready for a pool you don't think about?
     </h2>
-    <p class="text-[19px] max-w-[560px] mx-auto mb-9 opacity-90">
-      Instant quote in 90 seconds. Most new pools booked into the next available slot within 48 hours.
+    <p class="text-lg md:text-xl opacity-90 max-w-2xl mx-auto">
+      Get a fixed-price quote in 60 seconds. We'll have a tech at your gate within a week.
     </p>
-    <div class="inline-flex gap-3 flex-wrap justify-center">
-      <button class="btn btn-lg bg-white text-[var(--color-ink)]" data-action="quote">
-        Get my instant quote
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+    <div class="flex flex-wrap items-center justify-center gap-3">
+      <button data-action="quote" class="btn btn-lg bg-white text-deep hover:bg-white/95 shadow-xl">
+        Get a 60-second quote
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
           <path d="M5 12h14M13 5l7 7-7 7"/>
         </svg>
       </button>
-      <a href="tel:1300766572" class="btn btn-lg bg-transparent text-white border border-white/40">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5">
+      <a href="tel:1300766572" class="btn btn-lg bg-transparent text-white border border-white/30 hover:bg-white/10 hover:text-white">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
           <path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.7a2 2 0 01-.5 2.1L8 9.7a16 16 0 006 6l1.2-1.2a2 2 0 012.1-.5c.9.3 1.8.5 2.7.6a2 2 0 011.7 2z"/>
         </svg>
         1300 POOL PAL
       </a>
-    </div>
-    <div class="mt-8 text-sm opacity-85 inline-flex gap-6 flex-wrap justify-center">
-      <span>✓ No contracts</span>
-      <span>✓ All chemicals included</span>
-      <span>✓ 30-day money-back guarantee</span>
     </div>
   </div>
 </section>

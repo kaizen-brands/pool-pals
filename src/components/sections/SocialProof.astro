@@ -1,113 +1,20 @@
 ---
-const reviews = [
-  {
-    quote: "Honestly the best money we spend each month. Sam turns up rain or shine, and our pool's been crystal clear for two summers running.",
-    name: 'Olivia K.',
-    suburb: 'Mermaid Beach',
-    rating: 5,
-  },
-  {
-    quote: "Switched from a big chain — Pool Pals are half the price and actually answer their phone. Saved our pool from going green after the storms.",
-    name: 'Marcus T.',
-    suburb: 'Burleigh Heads',
-    rating: 5,
-  },
-  {
-    quote: "We've got two pools at our holiday rental and the team handle everything between bookings. Guests have stopped complaining. That's the win.",
-    name: 'Priya R.',
-    suburb: 'Broadbeach',
-    rating: 5,
-  },
-];
-
 const stats = [
-  { n: '1,400+', l: 'Pools serviced weekly' },
-  { n: '9 yrs', l: 'Local on the Coast' },
-  { n: '98%', l: 'Customer retention' },
-  { n: '< 2hr', l: 'Quote response' },
-];
-
-const rescues = [
-  { l: 'Helensvale · Green pool recovery', days: '4 days' },
-  { l: 'Robina · Black-spot algae', days: '2 days' },
-  { l: 'Coolangatta · Storm cleanup', days: '1 day' },
+  { n: '4.96', label: 'Google rating', sub: 'from 312 reviews' },
+  { n: '98%', label: 'Same-tech retention', sub: 'year over year' },
+  { n: '<24h', label: 'Quote turnaround', sub: 'weekdays, often <2h' },
+  { n: '12mo', label: 'Workmanship warranty', sub: 'on every repair' },
 ];
 ---
 
-<section class="bg-[var(--color-bg-alt)] py-20">
-  <div class="container-main">
-    <!-- Stats row -->
-    <div class="grid lg:grid-cols-[auto_1fr] gap-12 items-center mb-14">
-      <div>
-        <div class="flex items-center gap-3.5">
-          <span class="flex gap-0.5 text-[var(--color-sun)]">
-            {Array.from({ length: 5 }).map(() => (
-              <svg viewBox="0 0 24 24" fill="currentColor" class="w-[22px] h-[22px]">
-                <path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18 22l-6-3.6L6 22l1.5-7.2L2 10l7.1-1.1L12 2z"/>
-              </svg>
-            ))}
-          </span>
-          <div>
-            <div class="font-display text-4xl">4.9</div>
-            <div class="text-xs text-ink-mute">312 Google reviews</div>
-          </div>
-        </div>
+<section class="border-y border-border bg-card">
+  <div class="mx-auto max-w-7xl px-6 py-12 grid grid-cols-2 lg:grid-cols-4 gap-8">
+    {stats.map((s) => (
+      <div key={s.label} class="space-y-1">
+        <div class="font-display text-4xl md:text-5xl font-semibold text-deep tabular">{s.n}</div>
+        <div class="text-sm font-medium text-foreground">{s.label}</div>
+        <div class="text-xs text-ink-mute">{s.sub}</div>
       </div>
-
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:pl-12 lg:border-l border-[var(--color-hairline)]">
-        {stats.map((s) => (
-          <div key={s.l}>
-            <div class="font-display text-[30px] leading-none tabular-nums mb-0.5">{s.n}</div>
-            <div class="text-xs text-ink-mute tracking-wide">{s.l}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-
-    <!-- Reviews -->
-    <div class="grid md:grid-cols-3 gap-6">
-      {reviews.map((r) => (
-        <div key={r.name} class="card p-7 bg-white">
-          <span class="flex gap-0.5 text-[var(--color-sun)]">
-            {Array.from({ length: r.rating }).map(() => (
-              <svg viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5">
-                <path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18 22l-6-3.6L6 22l1.5-7.2L2 10l7.1-1.1L12 2z"/>
-              </svg>
-            ))}
-          </span>
-          <p class="text-base leading-relaxed my-4 text-[var(--color-ink)]">
-            "{r.quote}"
-          </p>
-          <div class="flex items-center gap-3 pt-[18px] border-t border-[var(--color-hairline-soft)]">
-            <div class="w-9 h-9 rounded-full bg-aqua-soft text-[var(--color-aqua-deep)] flex items-center justify-center font-semibold text-sm shrink-0">
-              {r.name[0]}
-            </div>
-            <div>
-              <div class="text-sm font-semibold">{r.name}</div>
-              <div class="text-xs text-ink-mute">{r.suburb}, QLD</div>
-            </div>
-            <div class="ml-auto text-[11px] text-ink-mute font-mono">via Google</div>
-          </div>
-        </div>
-      ))}
-    </div>
-
-    <!-- Before/after rescues -->
-    <div class="mt-16">
-      <div class="eyebrow mb-4">Recent rescues</div>
-      <div class="grid md:grid-cols-3 gap-5">
-        {rescues.map((p) => (
-          <div key={p.l} class="relative aspect-[4/3] rounded-[14px] overflow-hidden border border-[var(--color-hairline)]"
-            style="background: repeating-linear-gradient(135deg, oklch(0.5 0.12 140), oklch(0.5 0.12 140) 10px, oklch(0.35 0.1 145) 10px, oklch(0.35 0.1 145) 20px);">
-            <span class="absolute top-3 left-3 font-mono text-[10px] tracking-widest text-white uppercase bg-black/30 px-2 py-1 rounded-md">Before</span>
-            <div class="absolute bottom-0 left-0 right-0 p-2.5 px-3.5 flex justify-between items-end"
-              style="background: linear-gradient(0deg, rgba(0,0,0,0.55), transparent);">
-              <span class="text-white text-xs font-medium">{p.l}</span>
-              <span class="font-mono text-[11px] text-white/85">cleared in {p.days}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+    ))}
   </div>
 </section>

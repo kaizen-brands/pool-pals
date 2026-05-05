@@ -5,37 +5,16 @@ interface LogoProps {
 }
 
 export function Logo({ inverted = false }: LogoProps) {
-  const fill = inverted ? 'white' : 'var(--color-ink)';
-  const aqua = 'var(--color-aqua)';
-
   return (
-    <a href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
-      <span style={{
-        width: 34,
-        height: 34,
-        borderRadius: 10,
-        background: `linear-gradient(140deg, ${aqua}, var(--color-aqua-deep))`,
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        boxShadow: 'inset 0 -2px 4px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.08)',
-        position: 'relative',
-        overflow: 'hidden',
-      }}>
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M3 16c1.5 0 1.5-1.5 3-1.5s1.5 1.5 3 1.5 1.5-1.5 3-1.5 1.5 1.5 3 1.5 1.5-1.5 3-1.5 1.5 1.5 3 1.5"/>
-          <path d="M3 20c1.5 0 1.5-1.5 3-1.5s1.5 1.5 3 1.5 1.5-1.5 3-1.5 1.5 1.5 3 1.5 1.5-1.5 3-1.5 1.5 1.5 3 1.5"/>
+    <a href="/" className={`flex items-center gap-2.5 font-display text-xl font-semibold tracking-tight ${inverted ? 'text-white' : 'text-deep'}`}>
+      <span className="relative flex h-9 w-9 items-center justify-center rounded-lg bg-aqua text-white shadow-sm">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
+          <path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
+          <path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
         </svg>
       </span>
-      <span style={{
-        fontFamily: 'var(--font-display)',
-        fontSize: 24,
-        lineHeight: 1,
-        color: fill,
-        letterSpacing: '-0.02em',
-      }}>
-        Pool Pals
-      </span>
+      Pool Pals
     </a>
   );
 }
