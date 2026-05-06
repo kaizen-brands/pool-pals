@@ -37,7 +37,8 @@ export function Nav() {
 
   return (
     <header
-      className={`sticky top-0 z-40 h-16 w-full transition-all duration-200 ${
+      style={{ height: '64px', minHeight: '64px', boxSizing: 'border-box' }}
+      className={`sticky top-0 z-40 w-full transition-all duration-200 ${
         scrolled
           ? 'border-b border-border/80 bg-background/80 backdrop-blur-lg'
           : 'bg-transparent'
