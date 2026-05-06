@@ -37,13 +37,13 @@ export function Nav() {
 
   return (
     <header
-      className={`sticky top-0 z-40 w-full transition-all duration-200 ${
+      className={`sticky top-0 z-40 h-16 w-full transition-all duration-200 ${
         scrolled
           ? 'border-b border-border/80 bg-background/80 backdrop-blur-lg'
           : 'bg-transparent'
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+      <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-6">
         <Logo />
 
         {/* Desktop nav */}
