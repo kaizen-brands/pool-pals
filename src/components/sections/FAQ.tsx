@@ -1,14 +1,11 @@
 "use client";
 
-import React from 'react';
-import { Button } from '@/components/ui/button';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { ArrowRight, Phone } from 'lucide-react';
 
 const faqs = [
   { q: 'How quickly can you start?', a: 'Most new clients get their first service within 5 working days. Same-day call-outs available for green pools and equipment failures (Crystal plan and up).' },
@@ -48,15 +45,6 @@ export function FAQ() {
             </AccordionItem>
           ))}
         </Accordion>
-
-        <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button size="lg" onClick={() => window.dispatchEvent(new CustomEvent('open-quote-wizard'))}>
-            Get a quote <ArrowRight className="h-4 w-4" />
-          </Button>
-          <Button size="lg" variant="outline" asChild>
-            <a href="tel:1300766572"><Phone className="h-4 w-4" /> 1300 POOL PAL</a>
-          </Button>
-        </div>
       </div>
     </section>
   );
