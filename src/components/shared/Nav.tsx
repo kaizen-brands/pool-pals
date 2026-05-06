@@ -65,16 +65,19 @@ export function Nav() {
           <SheetTrigger className="lg:hidden p-2">
             <Menu className="w-6 h-6 text-ink" />
           </SheetTrigger>
-          <SheetContent side="right" className="w-full sm:max-w-sm bg-cream">
-            <SheetHeader>
+          <SheetContent
+            side="right"
+            className="!w-[85vw] !max-w-sm bg-cream p-6"
+          >
+            <SheetHeader className="p-0">
               <SheetTitle className="sr-only">Navigation</SheetTitle>
             </SheetHeader>
-            <nav className="flex flex-col gap-4 mt-8">
+            <nav className="flex flex-col mt-12">
               {links.map((l) => (
                 <a
                   key={l.label}
                   href={l.href}
-                  className="text-base font-medium text-ink-soft hover:text-foreground transition-colors py-2"
+                  className="text-lg font-medium text-ink hover:text-aqua-deep transition-colors py-3 border-b border-border/60"
                   onClick={() => setOpen(false)}
                 >
                   {l.label}
@@ -82,15 +85,8 @@ export function Nav() {
               ))}
             </nav>
             <div className="mt-8 flex flex-col gap-3">
-              <a
-                href="tel:1300766572"
-                className="text-sm font-medium flex items-center gap-2 text-ink-soft"
-              >
-                <Phone className="w-3.5 h-3.5" />
-                1300 POOL PAL
-              </a>
               <Button
-                className="w-full"
+                className="w-full h-11 rounded-full"
                 onClick={() => {
                   setOpen(false);
                   openQuote();
@@ -99,6 +95,13 @@ export function Nav() {
                 Get a quote
                 <ArrowRight className="h-4 w-4" />
               </Button>
+              <a
+                href="tel:1300766572"
+                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full border border-border text-sm font-medium text-ink-soft transition-colors hover:border-foreground hover:text-foreground"
+              >
+                <Phone className="h-4 w-4" />
+                1300 POOL PAL
+              </a>
             </div>
           </SheetContent>
         </Sheet>
