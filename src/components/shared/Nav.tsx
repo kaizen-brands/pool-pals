@@ -60,23 +60,6 @@ export function Nav() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
-          <a
-            href="tel:1300766572"
-            className="hidden md:inline-flex h-9 items-center gap-2 rounded-full border border-border bg-transparent px-4 text-sm font-medium text-ink-soft transition-colors hover:border-foreground hover:text-foreground"
-          >
-            <Phone className="h-4 w-4" />
-            1300 POOL PAL
-          </a>
-          <Button
-            onClick={openQuote}
-            className="h-9 rounded-full px-5 shadow-md"
-          >
-            Get a quote
-            <ArrowRight className="h-4 w-4" />
-          </Button>
-        </div>
-
         {/* Mobile menu */}
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger className="lg:hidden p-2">
