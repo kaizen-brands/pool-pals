@@ -75,10 +75,8 @@ export function Nav() {
 
         {/* Mobile menu */}
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger className="lg:hidden p-2" asChild>
-            <button>
-              <Menu className="w-6 h-6 text-ink" />
-            </button>
+          <SheetTrigger className="lg:hidden p-2">
+            <Menu className="w-6 h-6 text-ink" />
           </SheetTrigger>
           <SheetContent side="right" className="w-full sm:max-w-sm bg-cream">
             <SheetHeader>
