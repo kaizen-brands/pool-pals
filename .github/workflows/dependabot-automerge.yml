@@ -1,0 +1,34 @@
+name: Dependabot auto-merge (minor/patch)
+on: pull_request
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  automerge:
+    if: github.actor == 'dependabot[bot]'
+    # Self-hosted Hetzner runner — GitHub-hosted minutes are exhausted, which
+    # silently prevented this workflow from ever running (and therefore from
+    # ever enabling auto-merge on Dependabot PRs). Single gh-CLI step; trivial
+    # for the box.
+    runs-on: [self-hosted, linux, x64, hetzner-cx23]
+    steps:
+      - name: Fetch Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      # gh pr merge --auto waits for required status checks (per branch
+      # protection on `main`) before merging. Branch protection MUST require
+      # the typecheck/build/test workflows for this to be safe — without it,
+      # --auto merges immediately on PR open.
+      - name: Enable auto-merge for minor/patch
+        if: |
+          steps.metadata.outputs.update-type == 'version-update:semver-minor' ||
+          steps.metadata.outputs.update-type == 'version-update:semver-patch'
+        run: gh pr merge --auto --squash --delete-branch "$PR_URL"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}

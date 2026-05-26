@@ -1,0 +1,77 @@
+version: 2
+updates:
+  # Node deps (npm/yarn/pnpm)
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: 'chore(deps)'
+      prefix-development: 'chore(deps-dev)'
+      include: 'scope'
+
+    # Group PRs to reduce noise — one bundle per category per week.
+    groups:
+      dev-minor-patch:
+        applies-to: 'version-updates'
+        dependency-type: 'development'
+        update-types: ['minor', 'patch']
+        patterns: ['*']
+      prod-minor-patch:
+        applies-to: 'version-updates'
+        dependency-type: 'production'
+        update-types: ['minor', 'patch']
+        patterns: ['*']
+        exclude-patterns:
+          # Better-auth family is peer-dep-locked across the whole stack.
+          # Bump only via dedicated session paired with @convex-dev/better-auth.
+          # See ~/Kaizen/skills/kb-better-auth-convex/SKILL.md.
+          - 'better-auth'
+          - '@better-auth/*'
+          - 'better-call'
+          # Override-pinned packages (root pnpm.overrides) — Dependabot
+          # PRs would be silently undone by pnpm install.
+          - 'react'
+          - 'react-dom'
+          - '@types/react'
+          - '@types/react-dom'
+          - 'react-native-worklets'
+          # Deprecated upstream — needs migration, not bumps.
+          - '@react-email/components'
+
+    # Block all majors — they need human review per repo-health skill policy.
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
+      # Better-auth family: never open Dependabot PRs. They must move
+      # together with @convex-dev/better-auth as a paired bump in a
+      # dedicated session.
+      - dependency-name: 'better-auth'
+      - dependency-name: '@better-auth/*'
+      - dependency-name: 'better-call'
+      - dependency-name: '@convex-dev/better-auth'
+      # Override-pinned: pnpm.overrides forces resolution; Dependabot
+      # PRs are no-ops at install time.
+      - dependency-name: 'react-native-worklets'
+      # Deprecated; bumps within 1.0.x are also deprecated.
+      - dependency-name: '@react-email/components'
+      - dependency-name: '@react-email/render'
+      - dependency-name: 'react-email'
+
+  # GitHub Actions
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: 'chore(actions)'
+      include: 'scope'
+    groups:
+      actions-minor-patch:
+        update-types: ['minor', 'patch']
+        patterns: ['*']
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
