@@ -1,0 +1,142 @@
+name: E2E Smoke (stub)
+
+# Stub variant for repos that don't have their own Playwright setup yet.
+# Self-contained: writes a minimal playwright.config + landing-page spec at
+# runtime, runs via npx (no @playwright/test dependency required in the repo).
+#
+# Per-repo config:
+#   - Variable E2E_PREVIEW_URL  (preferred — stable Vercel alias for main, e.g.
+#                                "https://<project>-git-main-<team>.vercel.app")
+#   - Variable E2E_PROD_URL     (e.g. "https://bae.com.ph") — required if target=prod
+#   - Secret VERCEL_TOKEN (currently unused for stub, kept for parity)
+#   - Secret PUSHOVER_USER_KEY, PUSHOVER_APP_TOKEN
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Target environment'
+        type: choice
+        options: [preview, prod]
+        default: preview
+
+concurrency:
+  group: e2e-smoke
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    runs-on: self-hosted
+    timeout-minutes: 20
+    env:
+      PUSHOVER_USER_KEY: ${{ secrets.PUSHOVER_USER_KEY }}
+      PUSHOVER_APP_TOKEN: ${{ secrets.PUSHOVER_APP_TOKEN }}
+      INPUT_TARGET: ${{ inputs.target }}
+      PROD_URL_VAR: ${{ vars.E2E_PROD_URL }}
+      PREVIEW_URL_VAR: ${{ vars.E2E_PREVIEW_URL }}
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Resolve target URL
+        id: target
+        run: |
+          set -euo pipefail
+          if [ "$INPUT_TARGET" = "prod" ]; then
+            URL="$PROD_URL_VAR"
+            [ -z "$URL" ] && { echo "::error::Variable E2E_PROD_URL not set"; exit 1; }
+          else
+            URL="$PREVIEW_URL_VAR"
+            if [ -z "$URL" ]; then URL="$PROD_URL_VAR"; fi
+            [ -z "$URL" ] && { echo "::error::Neither E2E_PREVIEW_URL nor E2E_PROD_URL set"; exit 1; }
+          fi
+          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 "$URL" || echo "000")
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "Target: $URL (HTTP $code)"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Write stub playwright config + test
+        run: |
+          set -euo pipefail
+          mkdir -p smoke-stub
+          cat > smoke-stub/playwright.config.ts <<'EOF'
+          import { defineConfig } from '@playwright/test';
+          export default defineConfig({
+            testDir: '.',
+            timeout: 30_000,
+            retries: 1,
+            workers: 1,
+            use: {
+              baseURL: process.env.BASE_URL,
+              screenshot: 'only-on-failure',
+              trace: 'retain-on-failure',
+            },
+            reporter: [['line'], ['html', { open: 'never' }], ['junit', { outputFile: 'test-results/junit.xml' }]],
+          });
+          EOF
+          cat > smoke-stub/landing.smoke.spec.ts <<'EOF'
+          import { test, expect } from '@playwright/test';
+
+          test('landing page returns 200-ish and renders non-empty body', async ({ page }) => {
+            const response = await page.goto('/', { waitUntil: 'domcontentloaded' });
+            expect(response, 'response should exist').not.toBeNull();
+            const status = response!.status();
+            expect(status, `landing page status was ${status}`).toBeLessThan(400);
+
+            // Page must render *something* — catches blank-screen JS crashes.
+            const bodyText = await page.locator('body').textContent();
+            expect((bodyText ?? '').trim().length, 'body should not be empty').toBeGreaterThan(50);
+
+            // No top-level console error must have crashed the page render.
+            const title = await page.title();
+            expect(title.length, 'document title should not be empty').toBeGreaterThan(0);
+          });
+          EOF
+
+      - name: Run Playwright (ephemeral install)
+        id: playwright
+        continue-on-error: true
+        working-directory: smoke-stub
+        env:
+          BASE_URL: ${{ steps.target.outputs.url }}
+        run: |
+          set -euo pipefail
+          # Use a pinned Playwright version; --yes avoids interactive prompts.
+          npx --yes -p @playwright/test@1.60.0 playwright install chromium
+          npx --yes -p @playwright/test@1.60.0 playwright test
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-smoke-stub-${{ github.run_id }}
+          path: |
+            smoke-stub/playwright-report/
+            smoke-stub/test-results/
+          retention-days: 14
+          if-no-files-found: warn
+
+      - name: Pushover on failure
+        if: steps.playwright.outcome == 'failure'
+        env:
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          RUN_URL="https://github.com/${REPO}/actions/runs/${RUN_ID}"
+          curl -s --max-time 10 \
+            --form-string "token=${PUSHOVER_APP_TOKEN}" \
+            --form-string "user=${PUSHOVER_USER_KEY}" \
+            --form-string "title=E2E red (stub): ${REPO}" \
+            --form-string "message=Run ${RUN_ID} failed (target=${INPUT_TARGET}). ${RUN_URL}" \
+            --form-string "url=${RUN_URL}" \
+            --form-string "priority=0" \
+            https://api.pushover.net/1/messages.json > /dev/null || true
+
+      - name: Re-raise failure
+        if: steps.playwright.outcome == 'failure'
+        run: exit 1
