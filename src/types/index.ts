@@ -1,13 +1,12 @@
 export interface QuoteData {
-  poolSize: string;
-  poolType: string;
   frequency: string;
-  suburb: string;
-  condition: string;
+  poolType: string;
+  approxSize: string;
+  postcode: string;
   name: string;
   email: string;
   phone: string;
-  extras: string[];
+  notes: string;
 }
 
 export interface Review {
