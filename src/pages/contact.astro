@@ -65,7 +65,7 @@ const description = 'Get in touch with Pool Pals for quotes, questions, or emerg
         </div>
 
         <!-- Form -->
-        <form class="card p-8 space-y-5" action="/api/quote" method="POST">
+        <form id="contact-form" class="card p-8 space-y-5">
           <div class="grid sm:grid-cols-2 gap-5">
             <div>
               <label class="block text-sm font-medium mb-1.5" for="c-name">Name</label>
@@ -73,7 +73,7 @@ const description = 'Get in touch with Pool Pals for quotes, questions, or emerg
             </div>
             <div>
               <label class="block text-sm font-medium mb-1.5" for="c-phone">Phone</label>
-              <input id="c-phone" name="phone" type="tel" required class="w-full rounded-xl border border-[var(--color-hairline)] px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-aqua)]/30 focus:border-[var(--color-aqua)] transition-all bg-[var(--color-bg)]" />
+              <input id="c-phone" name="phone" type="tel" class="w-full rounded-xl border border-[var(--color-hairline)] px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-aqua)]/30 focus:border-[var(--color-aqua)] transition-all bg-[var(--color-bg)]" />
             </div>
           </div>
           <div>
@@ -95,13 +95,59 @@ const description = 'Get in touch with Pool Pals for quotes, questions, or emerg
             <textarea id="c-message" name="message" rows={5} required class="w-full rounded-xl border border-[var(--color-hairline)] px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-aqua)]/30 focus:border-[var(--color-aqua)] transition-all bg-[var(--color-bg)] resize-none"
               placeholder="Tell us about your pool, your suburb, and what you need..."></textarea>
           </div>
-          <button type="submit" class="btn btn-aqua w-full justify-center">
+          <button id="contact-submit" type="submit" class="btn btn-aqua w-full justify-center">
             Send message
           </button>
+          <p id="contact-status" class="text-xs text-center hidden"></p>
           <p class="text-xs text-ink-mute text-center">
             We'll reply within 4 business hours. For emergencies, please call 1300 766 572.
           </p>
         </form>
+
+        <script>
+          const form = document.getElementById('contact-form') as HTMLFormElement;
+          const submitBtn = document.getElementById('contact-submit') as HTMLButtonElement;
+          const statusEl = document.getElementById('contact-status') as HTMLParagraphElement;
+
+          form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending…';
+            statusEl.classList.add('hidden');
+
+            const data = {
+              name: (document.getElementById('c-name') as HTMLInputElement).value,
+              email: (document.getElementById('c-email') as HTMLInputElement).value,
+              phone: (document.getElementById('c-phone') as HTMLInputElement).value,
+              subject: (document.getElementById('c-subject') as HTMLSelectElement).value,
+              message: (document.getElementById('c-message') as HTMLTextAreaElement).value,
+            };
+
+            try {
+              const res = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+              });
+
+              if (res.ok) {
+                form.reset();
+                statusEl.textContent = "Message sent — we'll be in touch within 4 business hours.";
+                statusEl.className = 'text-xs text-center text-green-600';
+              } else {
+                statusEl.textContent = 'Something went wrong. Please try again or call 1300 766 572.';
+                statusEl.className = 'text-xs text-center text-red-500';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send message';
+              }
+            } catch {
+              statusEl.textContent = 'Network error. Please try again or call 1300 766 572.';
+              statusEl.className = 'text-xs text-center text-red-500';
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Send message';
+            }
+          });
+        </script>
       </div>
     </div>
   </section>
