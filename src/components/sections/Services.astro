@@ -77,7 +77,7 @@ const services = [
       {services.map((s) => {
         const Icon = s.icon;
         return (
-          <div key={s.title} class="group rounded-xl border bg-card text-card-foreground shadow-sm hover:border-aqua/50 hover:shadow-md transition-all p-6">
+          <div class="group rounded-xl border bg-card text-card-foreground shadow-sm hover:border-aqua/50 hover:shadow-md transition-all p-6">
             <div class="flex items-start justify-between mb-4">
               <div class="h-12 w-12 rounded-lg bg-aqua-soft flex items-center justify-center text-aqua-deep group-hover:bg-aqua group-hover:text-white transition-colors">
                 <Icon className="h-6 w-6" />
@@ -88,7 +88,7 @@ const services = [
             <p class="text-base text-ink-soft pt-1 mb-4">{s.blurb}</p>
             <ul class="space-y-2 mb-5">
               {s.includes.map((it) => (
-                <li key={it} class="flex items-start gap-2 text-sm text-ink-soft">
+                <li class="flex items-start gap-2 text-sm text-ink-soft">
                   <Check className="h-4 w-4 text-success mt-0.5 shrink-0" />
                   {it}
                 </li>

@@ -102,7 +102,7 @@ const reviews = [
     <div class="container-main">
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
         {reviews.map((r) => (
-          <div key={r.name} class="card p-6 flex flex-col">
+          <div class="card p-6 flex flex-col">
             <div class="flex items-center gap-2 mb-3">
               {Array.from({ length: r.stars }).map(() => (
                 <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-[var(--color-sun)]">

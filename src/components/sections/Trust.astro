@@ -11,7 +11,7 @@ const items = [
   <div class="container-main">
     <div class="grid grid-cols-2 lg:grid-cols-4">
       {items.map((it, i) => (
-        <div key={it.h} class={`p-2 px-7 ${i > 0 ? 'lg:border-l border-[var(--color-hairline)]' : ''} ${i > 1 ? 'border-t lg:border-t-0 pt-6 lg:pt-2' : ''} ${i % 2 === 1 ? 'border-l lg:border-l' : ''}`}>
+        <div class={`p-2 px-7 ${i > 0 ? 'lg:border-l border-[var(--color-hairline)]' : ''} ${i > 1 ? 'border-t lg:border-t-0 pt-6 lg:pt-2' : ''} ${i % 2 === 1 ? 'border-l lg:border-l' : ''}`}>
           {it.icon === 'shield' && (
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-[var(--color-aqua-deep)] mb-3">
                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>

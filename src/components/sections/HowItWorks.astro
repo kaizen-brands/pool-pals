@@ -26,11 +26,11 @@ const steps = [
 
     <div class="grid md:grid-cols-3 gap-6">
       {steps.map((s, i) => (
-        <div key={s.n} class="relative">
+        <div class="relative">
           <Card className="h-full">
             <CardHeader>
               <div class="font-mono text-sm text-aqua font-semibold mb-3">{s.n}</div>
-              <CardTitle class="font-display text-2xl text-deep leading-tight">{s.title}</CardTitle>
+              <CardTitle className="font-display text-2xl text-deep leading-tight">{s.title}</CardTitle>
             </CardHeader>
             <CardContent>
               <p class="text-ink-soft leading-relaxed">{s.body}</p>

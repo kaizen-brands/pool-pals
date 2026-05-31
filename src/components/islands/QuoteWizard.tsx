@@ -244,7 +244,7 @@ export function QuoteWizard({ open: propOpen, onOpenChange }: QuoteWizardProps) 
             </div>
             <div>
               <Label htmlFor="size">Approximate pool size</Label>
-              <Select value={data.approxSize} onValueChange={(v) => update('approxSize', v)}>
+              <Select value={data.approxSize} onValueChange={(v) => update('approxSize', v ?? '')}>
                 <SelectTrigger className="mt-1.5">
                   <SelectValue placeholder="Select size..." />
                 </SelectTrigger>

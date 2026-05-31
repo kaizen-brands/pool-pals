@@ -48,7 +48,7 @@ const description = 'Pool Pals has been keeping Gold Coast pools sparkling since
           { n: '12', l: 'Full-time technicians' },
           { n: '4.9★', l: 'Average Google rating' },
         ].map((s) => (
-          <div key={s.l} class="text-center p-6 rounded-[14px] bg-[var(--color-bg-alt)]">
+          <div class="text-center p-6 rounded-[14px] bg-[var(--color-bg-alt)]">
             <div class="font-display text-[40px] leading-none mb-1.5">{s.n}</div>
             <div class="text-sm text-ink-soft">{s.l}</div>
           </div>
@@ -95,7 +95,7 @@ const description = 'Pool Pals has been keeping Gold Coast pools sparkling since
             { t: 'Explain everything', d: 'You should understand your pool, not just pay for it.' },
             { t: 'Fix it right', d: 'No band-aid solutions. Do it properly or not at all.' },
           ].map((v) => (
-            <div key={v.t} class="card p-6">
+            <div class="card p-6">
               <h3 class="font-display text-xl mb-2">{v.t}</h3>
               <p class="text-sm text-ink-soft leading-relaxed">{v.d}</p>
             </div>

@@ -33,7 +33,7 @@ export function FAQ() {
           </p>
         </div>
 
-        <Accordion type="single" collapsible defaultValue="0" className="mt-2">
+        <Accordion defaultValue={["0"]} className="mt-2">
           {faqs.map((f, i) => (
             <AccordionItem key={i} value={String(i)}>
               <AccordionTrigger className="text-deep hover:no-underline text-base font-semibold">

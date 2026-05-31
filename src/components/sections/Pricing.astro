@@ -54,9 +54,9 @@ const tiers = [
 
     <div class="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
       {tiers.map((t) => (
-        <div key={t.name} class={`relative rounded-xl border bg-card text-card-foreground shadow-sm flex flex-col p-6 ${t.featured ? 'border-aqua border-2 shadow-xl scale-[1.02]' : ''}`}>
+        <div class={`relative rounded-xl border bg-card text-card-foreground shadow-sm flex flex-col p-6 ${t.featured ? 'border-aqua border-2 shadow-xl scale-[1.02]' : ''}`}>
           {t.tag && (
-            <Badge class={`absolute -top-3 left-1/2 -translate-x-1/2 ${t.featured ? 'bg-aqua text-white' : 'bg-deep text-white'}`}>
+            <Badge className={`absolute -top-3 left-1/2 -translate-x-1/2 ${t.featured ? 'bg-aqua text-white' : 'bg-deep text-white'}`}>
               {t.tag}
             </Badge>
           )}
@@ -72,7 +72,7 @@ const tiers = [
             <div class="h-px w-full bg-border mb-5"></div>
             <ul class="space-y-3">
               {t.features.map((f) => (
-                <li key={f} class="flex items-start gap-2.5 text-sm text-ink-soft">
+                <li class="flex items-start gap-2.5 text-sm text-ink-soft">
                   <Check className="h-4 w-4 text-success mt-0.5 shrink-0" />
                   {f}
                 </li>
