@@ -1,5 +1,6 @@
 {
   "name": "pool-pals",
+  "packageManager": "pnpm@9.15.9",
   "type": "module",
   "version": "1.0.0",
   "engines": {
