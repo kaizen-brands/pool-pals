@@ -1,6 +1,11 @@
 import type { LocalBusiness, FAQPage, Service as ServiceSchemaType, WithContext } from 'schema-dts';
 import type { Service } from '@/types';
 
+// Flip to true once Pool Pals has a genuine, verifiable aggregate rating to show.
+// Google can issue a manual action for review markup it can't corroborate, so the
+// rating stays out of the emitted schema (the data below is kept ready to restore).
+const SHOW_AGGREGATE_RATING = false;
+
 export function localBusinessSchema(): WithContext<LocalBusiness> {
   return {
     '@context': 'https://schema.org',
@@ -47,12 +52,14 @@ export function localBusinessSchema(): WithContext<LocalBusiness> {
         closes: '14:00',
       },
     ],
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '312',
-      bestRating: '5',
-    },
+    aggregateRating: SHOW_AGGREGATE_RATING
+      ? {
+          '@type': 'AggregateRating',
+          ratingValue: '4.9',
+          reviewCount: '312',
+          bestRating: '5',
+        }
+      : undefined,
     foundingDate: '2025',
     sameAs: [
       'https://g.co/kgs/poolpals',
