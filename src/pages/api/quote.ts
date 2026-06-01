@@ -1,7 +1,18 @@
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
+import { sendQuoteEmail } from '@/lib/resend';
 
 export const prerender = false;
+
+function estimatePrice(frequency: string): number {
+  const prices: Record<string, number> = {
+    weekly: 55,
+    fortnightly: 45,
+    'twice-weekly': 89,
+    'once-off': 129,
+  };
+  return prices[frequency?.toLowerCase()] ?? 55;
+}
 
 export const POST: APIRoute = async ({ request }) => {
   const apiKey = import.meta.env.RESEND_API_KEY;
@@ -46,11 +57,30 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
     if (error) {
-      console.error('Resend error:', error);
+      console.error('Resend ops email error:', error);
       return new Response(JSON.stringify({ error: 'Failed to send email' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
       });
+    }
+
+    const customerEmailResult = await sendQuoteEmail(
+      {
+        name,
+        email,
+        phone,
+        frequency,
+        poolType: poolType || '',
+        poolSize: approxSize || '',
+        suburb: postcode,
+        condition: notes || '',
+        extras: [],
+      },
+      estimatePrice(frequency),
+    );
+
+    if (customerEmailResult.error) {
+      console.error('Customer confirmation email error:', customerEmailResult.error);
     }
 
     return new Response(JSON.stringify({ success: true, id: data?.id }), {
