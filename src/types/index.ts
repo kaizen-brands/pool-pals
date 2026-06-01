@@ -37,6 +37,17 @@ export interface Service {
   keywords: string[];
 }
 
+export interface Suburb {
+  slug: string;
+  name: string;
+  postcode: string;
+  region: string;
+  blurb: string;
+  intro: string;
+  body: string[];
+  nearby: string[];
+}
+
 export interface PricingTier {
   name: string;
   tag: string;

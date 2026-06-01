@@ -1,0 +1,142 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { ServiceFAQ } from '@/components/sections/ServiceFAQ';
+import { suburbs, getNearbySuburbs } from '@/data/suburbs';
+import { featuredServices } from '@/data/services';
+import { iconMap } from '@/lib/icons';
+import { faqPageSchema } from '@/lib/schema';
+
+export const getStaticPaths = (() => {
+  return suburbs.map((suburb) => ({
+    params: { suburb: suburb.slug },
+    props: { suburb },
+  }));
+}) satisfies GetStaticPaths;
+
+const { suburb } = Astro.props;
+const nearby = getNearbySuburbs(suburb.slug);
+const SITE = 'https://poolpals.com.au';
+
+const metaTitle = `Pool Cleaning ${suburb.name} | Pool Pals`;
+const metaDescription = `Reliable weekly pool cleaning in ${suburb.name} ${suburb.postcode}, Gold Coast. Same technician, all chemicals included, photo report every visit. From $55/wk, no contracts.`;
+
+const faqs = [
+  {
+    q: `Do you service pools in ${suburb.name}?`,
+    a: `Yes — ${suburb.name} (${suburb.postcode}) is part of our regular Gold Coast service area. We're in ${suburb.region} routinely, so we can offer a reliable same-day-each-week or fortnightly schedule.`,
+  },
+  {
+    q: `How much does pool cleaning cost in ${suburb.name}?`,
+    a: `Weekly pool cleaning in ${suburb.name} starts from $55 per visit with standard balancing chemicals included. Larger pools, one-off cleans and green-pool recoveries are quoted up front — no surprises.`,
+  },
+  {
+    q: `How often should I clean my pool in ${suburb.name}?`,
+    a: `On the Gold Coast a weekly visit is ideal through the warmer months and fortnightly through winter. Pools in ${suburb.name} with heavy leaf load or high use may need weekly service year round to stay clear.`,
+  },
+];
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: `Pool Cleaning ${suburb.name}`,
+  serviceType: 'Pool cleaning and maintenance',
+  description: metaDescription,
+  provider: {
+    '@type': 'LocalBusiness',
+    name: 'Pool Pals',
+    url: SITE,
+    telephone: '+611300766572',
+  },
+  areaServed: {
+    '@type': 'City',
+    name: `${suburb.name}, Queensland`,
+  },
+  offers: {
+    '@type': 'Offer',
+    price: 55,
+    priceCurrency: 'AUD',
+    url: `${SITE}/pool-cleaning/${suburb.slug}`,
+  },
+};
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqPageSchema(faqs))} />
+
+  <section class="pt-16 pb-12">
+    <div class="container-narrow">
+      <nav class="text-sm text-ink-mute mb-8 flex items-center gap-2" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[var(--color-aqua-deep)]">Home</a>
+        <span>›</span>
+        <a href="/pool-cleaning" class="hover:text-[var(--color-aqua-deep)]">Pool Cleaning</a>
+        <span>›</span>
+        <span class="text-ink-soft">{suburb.name}</span>
+      </nav>
+
+      <div class="section-eyebrow eyebrow"><span class="dot"></span>{suburb.region} · {suburb.postcode}</div>
+      <h1 class="font-display text-[clamp(36px,4.5vw,64px)] leading-[1.04] mb-6">
+        Pool cleaning in <span class="text-aqua-deep italic">{suburb.name}</span>
+      </h1>
+
+      <p class="text-lg text-ink-soft leading-relaxed max-w-[680px] mb-5">{suburb.intro}</p>
+      {suburb.body.map((p) => (
+        <p class="text-ink-soft leading-relaxed max-w-[680px] mb-4">{p}</p>
+      ))}
+
+      <div class="flex flex-wrap items-center gap-4 mt-6">
+        <span class="text-base font-medium text-[var(--color-aqua-deep)]">from $55/wk</span>
+        <button class="btn btn-primary" data-action="quote">Get a quote</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-16">
+    <div class="container-narrow">
+      <h2 class="font-display text-[28px] leading-tight mb-6">Our pool services in {suburb.name}</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {featuredServices.map((s) => {
+          const Icon = iconMap[s.icon] ?? iconMap.Filter;
+          return (
+            <a href={`/services/${s.slug}`} class="card p-5 hover:border-[var(--color-aqua)] transition-colors block">
+              <div class="h-10 w-10 rounded-lg bg-aqua-soft flex items-center justify-center text-aqua-deep mb-3">
+                <Icon className="h-5 w-5" />
+              </div>
+              <h3 class="font-display text-lg leading-tight mb-1">{s.title}</h3>
+              <p class="text-sm text-ink-mute">{s.price}</p>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-16">
+    <div class="container-narrow">
+      <h2 class="font-display text-[28px] leading-tight mb-6">Common questions about pool cleaning in {suburb.name}</h2>
+      <ServiceFAQ client:visible faqs={faqs} />
+    </div>
+  </section>
+
+  {nearby.length > 0 && (
+    <section class="pb-24">
+      <div class="container-narrow">
+        <h2 class="font-display text-[24px] leading-tight mb-6">Nearby suburbs we service</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {nearby.map((n) => (
+            <a href={`/pool-cleaning/${n.slug}`} class="card p-5 hover:border-[var(--color-aqua)] transition-colors block">
+              <h3 class="font-display text-lg leading-tight mb-1">{n.name}</h3>
+              <p class="text-sm text-ink-mute">{n.postcode}</p>
+            </a>
+          ))}
+        </div>
+
+        <div class="mt-12 text-center">
+          <p class="text-ink-soft mb-4">Pool in {suburb.name} need attention?</p>
+          <button class="btn btn-aqua" data-action="quote">Get a free quote</button>
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>

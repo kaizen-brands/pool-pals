@@ -1,0 +1,62 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { suburbs } from '@/data/suburbs';
+
+const title = 'Pool Cleaning Across the Gold Coast — Suburbs We Service | Pool Pals';
+const description = 'Reliable weekly pool cleaning across every Gold Coast suburb — from Southport and Ashmore to Burleigh Heads, Robina, Hope Island and beyond. Find your suburb.';
+
+const regionOrder = [
+  'northern Gold Coast',
+  'central Gold Coast',
+  'southern Gold Coast',
+  'Gold Coast hinterland',
+];
+const grouped = regionOrder
+  .map((region) => ({
+    region,
+    items: suburbs.filter((s) => s.region === region).sort((a, b) => a.name.localeCompare(b.name)),
+  }))
+  .filter((g) => g.items.length > 0);
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="pt-16 pb-12">
+    <div class="container-narrow">
+      <div class="section-eyebrow eyebrow"><span class="dot"></span>Service area</div>
+      <h1 class="font-display text-[clamp(40px,5vw,72px)] leading-[1.02] mb-6">
+        Pool cleaning across the <span class="text-aqua-deep italic">Gold Coast.</span>
+      </h1>
+      <p class="text-lg text-ink-soft leading-relaxed max-w-[660px] mb-4">
+        We service every suburb on the Coast — from the Broadwater in the north to the border beaches in
+        the south, and out to the hinterland. Same friendly technician, all chemicals included, a photo
+        report after every visit, and no lock-in contracts.
+      </p>
+      <p class="text-ink-soft leading-relaxed max-w-[660px] mb-12">
+        Find your suburb below for local pool cleaning, or <button class="text-aqua-deep underline underline-offset-2 hover:text-aqua" data-action="quote">get an instant quote</button> in 90 seconds.
+      </p>
+    </div>
+  </section>
+
+  <section class="pb-24">
+    <div class="container-narrow space-y-12">
+      {grouped.map((g) => (
+        <div>
+          <h2 class="font-display text-[24px] leading-tight mb-5 capitalize">{g.region}</h2>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {g.items.map((s) => (
+              <a href={`/pool-cleaning/${s.slug}`} class="card p-4 hover:border-[var(--color-aqua)] transition-colors flex items-baseline justify-between gap-2">
+                <span class="font-medium text-ink">{s.name}</span>
+                <span class="text-xs text-ink-mute font-mono">{s.postcode}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <div class="text-center pt-4">
+        <p class="text-ink-soft mb-4">Don't see your suburb? We probably still cover it.</p>
+        <button class="btn btn-aqua" data-action="quote">Ask for a quote</button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

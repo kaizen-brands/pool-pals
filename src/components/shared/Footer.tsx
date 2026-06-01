@@ -17,7 +17,7 @@ export function Footer() {
       h: 'Company',
       l: [
         { label: 'About', href: '/about' },
-        { label: 'Service areas', href: '/#service-area' },
+        { label: 'Service areas', href: '/pool-cleaning' },
         { label: 'Reviews', href: '/reviews' },
         { label: 'Blog & guides', href: '/blog' },
         { label: 'All services', href: '/services' },

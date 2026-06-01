@@ -1,0 +1,383 @@
+import type { Suburb } from '@/types';
+
+export const suburbs: Suburb[] = [
+  {
+    slug: 'surfers-paradise',
+    name: 'Surfers Paradise',
+    postcode: '4217',
+    region: 'central Gold Coast',
+    blurb: 'High-rise strata pools and beachfront apartments, kept guest-ready year round.',
+    intro: 'Surfers Paradise is wall-to-wall apartment towers, holiday lets and a handful of beachfront homes — so the pools here range from rooftop strata pools to compact courtyard plunge pools.',
+    body: [
+      'The salt air coming straight off the beach is hard on water chemistry and equipment, and high guest turnover in the holiday towers means pools get used hard and watched little. We keep them balanced, clear and presentable so they match the listing photos every changeover.',
+      'Whether you own a single apartment, manage a short-stay tower, or have one of the rare houses tucked behind the strip, we service Surfers Paradise on a reliable schedule with a photo report after every visit.',
+    ],
+    nearby: ['broadbeach', 'bundall', 'southport', 'main-beach'],
+  },
+  {
+    slug: 'broadbeach',
+    name: 'Broadbeach',
+    postcode: '4218',
+    region: 'central Gold Coast',
+    blurb: 'Apartment pools and family homes minutes from Pacific Fair, kept sparkling.',
+    intro: 'Broadbeach mixes high-rise apartment living and the dining-and-shopping precinct around Pacific Fair with quiet residential streets of family homes just behind it.',
+    body: [
+      'That mix means we look after everything from busy strata and holiday-let pools near the beach to backyard family pools a few blocks back. The beachside position brings salt and wind-blown debris, so consistent weekly attention is what keeps Broadbeach water clear.',
+      'We service the whole suburb on a set schedule, balance the water with lab-grade testing, and leave a photo report after each visit — no contracts, no surprises.',
+    ],
+    nearby: ['mermaid-beach', 'surfers-paradise', 'bundall', 'nobby-beach'],
+  },
+  {
+    slug: 'mermaid-beach',
+    name: 'Mermaid Beach',
+    postcode: '4218',
+    region: 'central Gold Coast',
+    blurb: 'Premium beachfront pools along Hedges Ave and the surrounding streets.',
+    intro: "Mermaid Beach is home to some of the Coast's most valuable beachfront real estate — including Hedges Avenue's \"Millionaires' Row\" — where large architectural pools are part of the lifestyle.",
+    body: [
+      'Beachfront pools take a beating from salt spray and onshore wind, and a premium pool deserves premium care: precise chemistry, spotless tiling and waterlines, and equipment looked after before it fails. That is exactly how we service Mermaid Beach.',
+      'From the big beachfront homes to the apartments and family houses on the western streets, we keep every Mermaid Beach pool swim-ready with a documented photo report each visit.',
+    ],
+    nearby: ['nobby-beach', 'broadbeach', 'miami', 'burleigh-heads'],
+  },
+  {
+    slug: 'nobby-beach',
+    name: 'Nobby Beach',
+    postcode: '4218',
+    region: 'central Gold Coast',
+    blurb: 'A mix of renovated cottages and new builds in one of the Coast\'s trendiest pockets.',
+    intro: 'Nobby Beach has transformed into one of the Gold Coast\'s most sought-after villages, and its pools are just as varied — original beach-cottage pools sitting alongside sharp new plunge pools in knock-down rebuilds.',
+    body: [
+      'Smaller blocks and plunge pools heat up and shift chemistry fast, while the beachside location adds salt and sand to the mix. We tune our service to the pool in front of us rather than a one-size-fits-all routine.',
+      'We service Nobby Beach weekly or fortnightly, keep the water balanced and clear, and send a photo report so you always know what was done.',
+    ],
+    nearby: ['mermaid-beach', 'miami', 'broadbeach', 'burleigh-heads'],
+  },
+  {
+    slug: 'miami',
+    name: 'Miami',
+    postcode: '4220',
+    region: 'central Gold Coast',
+    blurb: 'Beachside family pools, many in older homes being renovated and refreshed.',
+    intro: 'Miami is a relaxed beachside suburb where original family homes are steadily being renovated, and plenty of those backyards have an older pool that needs steady, knowledgeable care.',
+    body: [
+      'Older pools often come with ageing equipment and quirky plumbing, so on top of weekly cleaning we keep an eye on the pump, filter and chlorinator and flag problems before they turn into expensive failures.',
+      'From the beach end to the Burleigh hill side, we service Miami pools on a reliable schedule with full water testing and a photo report every visit.',
+    ],
+    nearby: ['burleigh-heads', 'mermaid-beach', 'nobby-beach', 'palm-beach'],
+  },
+  {
+    slug: 'burleigh-heads',
+    name: 'Burleigh Heads',
+    postcode: '4220',
+    region: 'southern Gold Coast',
+    blurb: 'Elevated, leafy blocks and beachfront homes around the headland.',
+    intro: 'Burleigh Heads wraps a beautiful headland of national-park bush, and the elevated, leafy blocks around it mean plenty of pools deal with serious leaf and debris load on top of the usual coastal salt.',
+    body: [
+      'Heavy leaf litter from the headland bushland clogs skimmers and feeds algae, so Burleigh pools reward consistent skimming, brushing and balanced water — exactly what our weekly service delivers.',
+      'From premium homes near the beach to family houses up the hill and out toward West Burleigh, we keep every Burleigh Heads pool clear and swim-ready, with a photo report each time.',
+    ],
+    nearby: ['miami', 'palm-beach', 'reedy-creek', 'mermaid-beach'],
+  },
+  {
+    slug: 'palm-beach',
+    name: 'Palm Beach',
+    postcode: '4221',
+    region: 'southern Gold Coast',
+    blurb: 'A long beachside strip of family homes, fast becoming a renovation hotspot.',
+    intro: 'Palm Beach stretches along a long, classic beach and has become one of the Coast\'s most popular family suburbs, with older homes constantly being renovated and new pools going in.',
+    body: [
+      'Sand and salt blow in off that long beachfront, and a freshly renovated pool needs the right chemistry from day one to protect new tiling and equipment. We keep Palm Beach pools balanced, clear and properly maintained year round.',
+      'From the beach blocks to the creek end near Currumbin, we service Palm Beach weekly or fortnightly with lab-grade water testing and a photo report after every clean.',
+    ],
+    nearby: ['currumbin', 'burleigh-heads', 'miami', 'tugun'],
+  },
+  {
+    slug: 'currumbin',
+    name: 'Currumbin',
+    postcode: '4223',
+    region: 'southern Gold Coast',
+    blurb: 'From beachfront homes to leafy Currumbin Valley acreage pools.',
+    intro: 'Currumbin runs from a beautiful surf beach back into the leafy Currumbin Valley, so the pools here range from compact beachside courtyards to large pools on bushland acreage.',
+    body: [
+      'Valley and hillside pools cop heavy leaf load from surrounding bush and trees, while the beachfront pools deal with salt and wind — two very different challenges we tailor our service to.',
+      'Whether you are near the alley and the beach or back on acreage toward the valley, we keep your Currumbin pool clean, balanced and clear with a photo report every visit.',
+    ],
+    nearby: ['palm-beach', 'tugun', 'bilinga', 'coolangatta'],
+  },
+  {
+    slug: 'tugun',
+    name: 'Tugun',
+    postcode: '4224',
+    region: 'southern Gold Coast',
+    blurb: 'A quiet beachside village pocket near the southern end of the Coast.',
+    intro: 'Tugun is a low-key beachside village near the southern end of the Gold Coast, with compact blocks and a relaxed, local feel — and pools that benefit from steady, no-fuss care.',
+    body: [
+      'Being right on the coast, Tugun pools get plenty of salt and wind-blown debris, so reliable weekly skimming and balanced water are what keep them clear through the warmer months.',
+      'We service Tugun on a set schedule, test and dose the water properly each visit, and leave a photo report so you can see exactly what was done.',
+    ],
+    nearby: ['bilinga', 'currumbin', 'coolangatta', 'palm-beach'],
+  },
+  {
+    slug: 'coolangatta',
+    name: 'Coolangatta',
+    postcode: '4225',
+    region: 'southern Gold Coast',
+    blurb: 'Holiday apartments and permanent homes at the southern border beaches.',
+    intro: 'Coolangatta sits at the very southern tip of the Gold Coast on the NSW border, a beach town of holiday apartments, short-stay lets and permanent homes spread between famous surf breaks.',
+    body: [
+      'Holiday-let and apartment pools need to be guest-ready on tight turnovers, while the salty border-beach air keeps every pool\'s chemistry and equipment under pressure. We handle both with a consistent, documented service.',
+      'From beachfront units to homes tucked behind the points, we keep Coolangatta pools sparkling with full water testing and a photo report after every clean.',
+    ],
+    nearby: ['kirra', 'bilinga', 'tugun', 'currumbin'],
+  },
+  {
+    slug: 'kirra',
+    name: 'Kirra',
+    postcode: '4225',
+    region: 'southern Gold Coast',
+    blurb: 'Beachfront apartments and homes by one of the world\'s great surf breaks.',
+    intro: 'Kirra is famous for its surf, and its beachfront apartments and beach houses make it a popular holiday and lifestyle pocket — with pools that need to look their best for residents and guests alike.',
+    body: [
+      'Right on the beach, Kirra pools take on salt spray and sand, and the holiday-let pools need to be crystal clear on every changeover. Consistent weekly attention is what keeps them that way.',
+      'We service Kirra apartments and homes on a reliable schedule, balance the water with lab-grade testing, and leave a photo report every visit.',
+    ],
+    nearby: ['coolangatta', 'bilinga', 'tugun', 'currumbin'],
+  },
+  {
+    slug: 'bilinga',
+    name: 'Bilinga',
+    postcode: '4225',
+    region: 'southern Gold Coast',
+    blurb: 'A quiet beachside suburb between Kirra and the airport.',
+    intro: 'Bilinga is a quiet, beachside suburb between Kirra and the airport, with a relaxed mix of original homes and newer builds — and pools that just want reliable, consistent care.',
+    body: [
+      'The beachfront position means salt and wind-blown debris are a constant, so steady weekly skimming, brushing and balanced water keep Bilinga pools clear without drama.',
+      'We service Bilinga on a set schedule with full water testing and a photo report each visit, so your pool is always swim-ready.',
+    ],
+    nearby: ['kirra', 'tugun', 'coolangatta', 'currumbin'],
+  },
+  {
+    slug: 'robina',
+    name: 'Robina',
+    postcode: '4226',
+    region: 'central Gold Coast',
+    blurb: 'Master-planned family estates and lakeside homes around Robina Town Centre.',
+    intro: 'Robina is one of the Coast\'s big master-planned suburbs — family estates, lakes and the major Robina Town Centre — with a huge number of consistent, newer backyard pools.',
+    body: [
+      'Estate pools are typically modern and well-built, which makes a regular weekly or fortnightly service the perfect fit: balanced water, clean surfaces and equipment that gets checked before it fails.',
+      'From the lake districts to the streets around the town centre and stadium, we keep Robina family pools clear and swim-ready with a photo report every visit.',
+    ],
+    nearby: ['varsity-lakes', 'reedy-creek', 'mudgeeraba', 'carrara'],
+  },
+  {
+    slug: 'varsity-lakes',
+    name: 'Varsity Lakes',
+    postcode: '4227',
+    region: 'central Gold Coast',
+    blurb: 'Lakeside master-planned estates around Bond University.',
+    intro: 'Varsity Lakes is a master-planned, lake-laced suburb built around Bond University, popular with families and home to a steady mix of estate pools and rental properties.',
+    body: [
+      'Family pools and student-rental pools both need consistent care, and the modern estate pools here respond beautifully to a regular service that keeps the chemistry balanced and the surfaces clean.',
+      'We service Varsity Lakes weekly or fortnightly, test and dose with lab-grade meters, and leave a photo report so owners and managers always have a record.',
+    ],
+    nearby: ['robina', 'reedy-creek', 'burleigh-heads', 'mudgeeraba'],
+  },
+  {
+    slug: 'reedy-creek',
+    name: 'Reedy Creek',
+    postcode: '4227',
+    region: 'central Gold Coast',
+    blurb: 'Leafy, family-friendly streets just off the M1.',
+    intro: 'Reedy Creek is a leafy, family-friendly suburb on the western side of the M1, where large blocks and plenty of trees mean pools deal with real leaf load alongside the warm-climate algae pressure.',
+    body: [
+      'Trees and garden debris keep skimmers and filters working hard here, so consistent skimming, brushing and balanced water are exactly what Reedy Creek pools need to stay clear.',
+      'We service Reedy Creek on a reliable schedule, keep an eye on the equipment, and leave a photo report after every clean.',
+    ],
+    nearby: ['varsity-lakes', 'robina', 'mudgeeraba', 'burleigh-heads'],
+  },
+  {
+    slug: 'mudgeeraba',
+    name: 'Mudgeeraba',
+    postcode: '4213',
+    region: 'Gold Coast hinterland',
+    blurb: 'Hinterland village living with acreage blocks and larger pools.',
+    intro: 'Mudgeeraba is a hinterland village with a strong community feel and plenty of acreage, so the pools out here tend to be larger, on bigger blocks, and surrounded by trees.',
+    body: [
+      'Acreage pools mean more water to balance and far more leaf and bush debris to manage, which is where a thorough, consistent service really earns its keep. We size our visit to the pool and the property, not a generic routine.',
+      'From the village to the surrounding acreage, we keep Mudgeeraba pools clean, balanced and swim-ready with a photo report each time.',
+    ],
+    nearby: ['robina', 'reedy-creek', 'varsity-lakes', 'carrara'],
+  },
+  {
+    slug: 'bundall',
+    name: 'Bundall',
+    postcode: '4217',
+    region: 'central Gold Coast',
+    blurb: 'Riverside homes and a central location minutes from Surfers Paradise.',
+    intro: 'Bundall sits on the Nerang River just inland from Surfers Paradise, mixing a business precinct with established riverside and canal-front homes that often feature generous pools.',
+    body: [
+      'Riverfront and canal-side blocks bring their own debris and humidity, and the established homes here often have mature, well-used pools that reward steady, knowledgeable care.',
+      'We service Bundall on a reliable weekly or fortnightly schedule, balance the water with lab-grade testing, and leave a photo report after every visit.',
+    ],
+    nearby: ['benowa', 'ashmore', 'surfers-paradise', 'broadbeach'],
+  },
+  {
+    slug: 'benowa',
+    name: 'Benowa',
+    postcode: '4217',
+    region: 'central Gold Coast',
+    blurb: 'Established, leafy family streets near the golf courses and Benowa Gardens.',
+    intro: 'Benowa is an established, leafy central suburb known for its golf courses, mature gardens and comfortable family homes — and plenty of well-loved backyard pools.',
+    body: [
+      'Those mature gardens look beautiful but drop a lot of leaf litter, so Benowa pools need consistent skimming and balanced water to stay clear, especially through storm season.',
+      'We service Benowa family pools weekly or fortnightly, keep the equipment in check, and send a photo report so you always know what was done.',
+    ],
+    nearby: ['ashmore', 'bundall', 'southport', 'carrara'],
+  },
+  {
+    slug: 'ashmore',
+    name: 'Ashmore',
+    postcode: '4214',
+    region: 'central Gold Coast',
+    blurb: 'Established, leafy family living right in the heart of the Gold Coast.',
+    intro: 'Ashmore is a well-established, central Gold Coast suburb of leafy streets, mature gardens and comfortable family homes — exactly the kind of area where a backyard pool is a year-round part of family life.',
+    body: [
+      'Those established gardens mean real leaf and debris load on the pool, and the central position keeps Ashmore pools busy through the long Gold Coast swimming season. Consistent weekly skimming, brushing and balanced water are what keep them clear.',
+      'Being right in the middle of the Coast, Ashmore is bread-and-butter territory for us — we are here regularly, so you get a reliable same-day-each-week service, lab-grade water testing, and a photo report after every clean.',
+    ],
+    nearby: ['benowa', 'bundall', 'southport', 'molendinar'],
+  },
+  {
+    slug: 'carrara',
+    name: 'Carrara',
+    postcode: '4211',
+    region: 'central Gold Coast',
+    blurb: 'A mix of acreage, estates and riverside blocks around the stadium.',
+    intro: 'Carrara spreads along the Nerang River around the stadium, blending acreage and rural-residential blocks with newer estates — so the pools here range from big acreage pools to compact estate courtyards.',
+    body: [
+      'River flats and large treed blocks bring plenty of debris, while the newer estate pools just need a steady, consistent routine. We tailor each visit to the pool and the property in front of us.',
+      'From the acreage to the estates, we keep Carrara pools clean, balanced and swim-ready, with a photo report every visit and no lock-in contracts.',
+    ],
+    nearby: ['benowa', 'ashmore', 'mudgeeraba', 'robina'],
+  },
+  {
+    slug: 'helensvale',
+    name: 'Helensvale',
+    postcode: '4212',
+    region: 'northern Gold Coast',
+    blurb: 'Master-planned northern estates near Westfield and the train line.',
+    intro: 'Helensvale is a major northern hub — master-planned family estates, Westfield, the train station and theme parks nearby — with a large, consistent base of modern backyard pools.',
+    body: [
+      'The newer estate pools here are well-suited to a regular weekly or fortnightly service that keeps the water balanced and the surfaces spotless, while catching any equipment issues early.',
+      'From the established estates to the newer releases, we service Helensvale family pools on a reliable schedule with lab-grade testing and a photo report each visit.',
+    ],
+    nearby: ['hope-island', 'coombabah', 'paradise-point', 'runaway-bay'],
+  },
+  {
+    slug: 'hope-island',
+    name: 'Hope Island',
+    postcode: '4212',
+    region: 'northern Gold Coast',
+    blurb: 'Canal estates, golf and resort-style pools in gated northern communities.',
+    intro: 'Hope Island is the Coast\'s premier canal-and-golf address — gated estates, marinas and resort-style living — where large, high-end pools are part of the lifestyle.',
+    body: [
+      'Canal-side and resort pools deal with salt, humidity and a lot of visibility, so they demand premium, consistent care: precise chemistry, immaculate surfaces and equipment looked after before it fails.',
+      'From the gated estates to the marina precincts, we keep Hope Island pools in show condition with full water testing and a documented photo report after every visit.',
+    ],
+    nearby: ['paradise-point', 'helensvale', 'runaway-bay', 'coombabah'],
+  },
+  {
+    slug: 'paradise-point',
+    name: 'Paradise Point',
+    postcode: '4216',
+    region: 'northern Gold Coast',
+    blurb: 'Waterfront and canal-front family homes by the northern Broadwater.',
+    intro: 'Paradise Point is a relaxed, upmarket waterfront suburb on the northern Broadwater, full of canal-front and near-water family homes with pools that make the most of the breezy waterside setting.',
+    body: [
+      'Waterfront and canal blocks get salt-laden breezes off the Broadwater, which keeps pool chemistry and equipment under steady pressure — so consistent, balanced care is what keeps these pools clear.',
+      'We service Paradise Point weekly or fortnightly, test and dose with lab-grade meters, and leave a photo report so you always have a record.',
+    ],
+    nearby: ['runaway-bay', 'hope-island', 'biggera-waters', 'helensvale'],
+  },
+  {
+    slug: 'runaway-bay',
+    name: 'Runaway Bay',
+    postcode: '4216',
+    region: 'northern Gold Coast',
+    blurb: 'Canal homes and marina living on the northern Broadwater.',
+    intro: 'Runaway Bay is built around its marina and a network of canals, a popular waterfront suburb where many family homes back onto the water and have pools to match the lifestyle.',
+    body: [
+      'Canal-front pools take on salt air and humidity off the Broadwater, so reliable weekly attention and properly balanced water are what keep them clear and protect the equipment.',
+      'From the canal estates to the streets around the marina, we keep Runaway Bay pools swim-ready with full testing and a photo report each visit.',
+    ],
+    nearby: ['paradise-point', 'biggera-waters', 'labrador', 'hope-island'],
+  },
+  {
+    slug: 'southport',
+    name: 'Southport',
+    postcode: '4215',
+    region: 'central Gold Coast',
+    blurb: 'The Gold Coast CBD — from Broadwater apartments to established family homes.',
+    intro: 'Southport is the Gold Coast\'s central business district and one of its most diverse suburbs, spanning Broadwater high-rise apartments, the hospital and university precinct, and established family homes on the western streets.',
+    body: [
+      'That range means we service everything in Southport — from strata and apartment pools near the Broadwater to older backyard pools with ageing equipment in the established streets. We tailor the service to each pool rather than running a single routine.',
+      'As a central Coast suburb we are in Southport constantly, so you get a dependable same-day-each-week service, lab-grade water testing, and a photo report after every clean.',
+    ],
+    nearby: ['labrador', 'ashmore', 'benowa', 'biggera-waters'],
+  },
+  {
+    slug: 'labrador',
+    name: 'Labrador',
+    postcode: '4215',
+    region: 'central Gold Coast',
+    blurb: 'Established Broadwater-side homes and units, a popular family pocket.',
+    intro: 'Labrador hugs the Broadwater just north of Southport, an established and popular suburb mixing older family homes, unit blocks and a steadily renovating streetscape.',
+    body: [
+      'Many Labrador pools sit behind older homes with equipment that benefits from a watchful eye, and the Broadwater breezes add salt to the chemistry equation. Our weekly service keeps the water balanced and the gear running.',
+      'From the waterfront streets to the family blocks further back, we service Labrador pools on a reliable schedule with a photo report every visit.',
+    ],
+    nearby: ['southport', 'biggera-waters', 'runaway-bay', 'ashmore'],
+  },
+  {
+    slug: 'biggera-waters',
+    name: 'Biggera Waters',
+    postcode: '4216',
+    region: 'northern Gold Coast',
+    blurb: 'Waterside family homes and units near Harbour Town.',
+    intro: 'Biggera Waters sits on the Broadwater near Harbour Town, a family-friendly suburb of waterside homes, canal blocks and unit complexes with a relaxed northern feel.',
+    body: [
+      'Waterside and canal pools here take on salt-laden air off the Broadwater, so steady weekly care and balanced chemistry are what keep them clear and protect the equipment over time.',
+      'We service Biggera Waters homes and complexes on a set schedule, with lab-grade water testing and a photo report after every clean.',
+    ],
+    nearby: ['runaway-bay', 'labrador', 'coombabah', 'paradise-point'],
+  },
+  {
+    slug: 'coombabah',
+    name: 'Coombabah',
+    postcode: '4216',
+    region: 'northern Gold Coast',
+    blurb: 'Leafy lakeland family streets in the green northern Gold Coast.',
+    intro: 'Coombabah is a leafy, lakeland suburb in the northern Gold Coast, wrapped around the Coombabah Lake conservation area and full of comfortable family homes on green, treed blocks.',
+    body: [
+      'All that greenery is lovely but drops plenty of leaf litter, so Coombabah pools need consistent skimming and balanced water to stay clear — especially through the storm season.',
+      'We service Coombabah family pools weekly or fortnightly, keep the equipment in check, and leave a photo report so you always know what was done.',
+    ],
+    nearby: ['helensvale', 'biggera-waters', 'runaway-bay', 'paradise-point'],
+  },
+];
+
+export function getSuburbBySlug(slug: string): Suburb | undefined {
+  return suburbs.find((s) => s.slug === slug);
+}
+
+const suburbSlugs = new Set(suburbs.map((s) => s.slug));
+
+export function getNearbySuburbs(slug: string): Suburb[] {
+  const s = getSuburbBySlug(slug);
+  if (!s) return [];
+  return s.nearby
+    .filter((n) => suburbSlugs.has(n))
+    .map((n) => getSuburbBySlug(n)!)
+    .slice(0, 4);
+}
