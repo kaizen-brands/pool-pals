@@ -10,12 +10,16 @@ import Trust from '@/components/sections/Trust.astro';
 import ServiceArea from '@/components/sections/ServiceArea.astro';
 import { FAQ } from '@/components/sections/FAQ';
 import FinalCTA from '@/components/sections/FinalCTA.astro';
+import { homeFaqs } from '@/data/faqs';
+import { faqPageSchema } from '@/lib/schema';
 
 const title = 'Pool Pals — Gold Coast Pool Cleaning | Weekly Service from $45';
 const description = 'Reliable weekly pool cleaning across the Gold Coast. Same friendly technician, transparent pricing, all chemicals included. No contracts, no surprises. Get an instant quote in 90 seconds.';
+const faqSchema = faqPageSchema(homeFaqs);
 ---
 
 <BaseLayout title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <Hero />
   <SocialProof />
   <Services />
