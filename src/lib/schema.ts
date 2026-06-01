@@ -53,7 +53,7 @@ export function localBusinessSchema(): WithContext<LocalBusiness> {
       reviewCount: '312',
       bestRating: '5',
     },
-    foundingDate: '2017',
+    foundingDate: '2025',
     sameAs: [
       'https://g.co/kgs/poolpals',
     ],

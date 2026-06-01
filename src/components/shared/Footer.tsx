@@ -41,14 +41,14 @@ export function Footer() {
         <div className="space-y-4">
           <Logo inverted />
           <p className="text-sm text-aqua-soft/70 leading-relaxed">
-            Local Gold Coast pool care, since 2014. Family-owned, QBCC-licensed, fully insured.
+            Local Gold Coast pool care, since 2025. Family-owned, QBCC-licensed, fully insured.
           </p>
           <div className="text-sm text-aqua-soft/70 space-y-1.5">
             <a href="tel:1300766572" className="flex items-center gap-2 hover:text-white transition-colors">
               <Phone className="h-3.5 w-3.5" /> 1300 POOL PAL
             </a>
-            <a href="mailto:hi@poolpals.com.au" className="flex items-center gap-2 hover:text-white transition-colors">
-              <Mail className="h-3.5 w-3.5" /> hi@poolpals.com.au
+            <a href="mailto:hello@poolpals.com.au" className="flex items-center gap-2 hover:text-white transition-colors">
+              <Mail className="h-3.5 w-3.5" /> hello@poolpals.com.au
             </a>
             <span className="flex items-center gap-2">
               <MapPin className="h-3.5 w-3.5" /> Unit 4 / 28 Sunshine Bvd, Mermaid Waters
