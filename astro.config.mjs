@@ -6,6 +6,7 @@ import vercel from '@astrojs/vercel';
 export default defineConfig({
   site: 'https://poolpals.com.au',
   output: 'static',
+  trailingSlash: 'never',
   adapter: vercel({
     imageService: true,
     webAnalytics: {

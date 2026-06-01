@@ -62,7 +62,7 @@ export function Nav() {
 
         {/* Mobile menu */}
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger className="lg:hidden p-2">
+          <SheetTrigger className="lg:hidden p-2" aria-label="Open menu">
             <Menu className="w-6 h-6 text-ink" />
           </SheetTrigger>
           <SheetContent

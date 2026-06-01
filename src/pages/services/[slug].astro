@@ -44,7 +44,11 @@ const schemas = [serviceSchema(service), faqPageSchema(service.faqs)];
         </h1>
       </div>
 
-      <p class="text-lg text-ink-soft leading-relaxed max-w-[680px] mb-6">{service.intro}</p>
+      <p class="text-lg text-ink-soft leading-relaxed max-w-[680px] mb-4">{service.intro}</p>
+
+      <p class="text-[15px] text-ink-mute max-w-[680px] mb-6">
+        Part of our full range of <a href="/services" class="text-aqua-deep underline underline-offset-2 hover:text-aqua">Gold Coast pool services</a> — one local team for cleaning, repairs, inspections and compliance.
+      </p>
 
       <div class="flex flex-wrap items-center gap-4">
         <span class="text-base font-medium text-[var(--color-aqua-deep)]">{service.price}</span>

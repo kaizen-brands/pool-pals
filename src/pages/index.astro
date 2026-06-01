@@ -13,12 +13,12 @@ import FinalCTA from '@/components/sections/FinalCTA.astro';
 import { homeFaqs } from '@/data/faqs';
 import { faqPageSchema } from '@/lib/schema';
 
-const title = 'Pool Pals — Gold Coast Pool Cleaning | Weekly Service from $45';
-const description = 'Reliable weekly pool cleaning across the Gold Coast. Same friendly technician, transparent pricing, all chemicals included. No contracts, no surprises. Get an instant quote in 90 seconds.';
+const title = 'Pool Pals — Gold Coast Pool Cleaning from $45/wk';
+const description = 'Reliable weekly pool cleaning across the Gold Coast — same technician, all chemicals included, transparent pricing. No contracts. Instant quote in 90 seconds.';
 const faqSchema = faqPageSchema(homeFaqs);
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} preloadImage="/images/hero-pool.webp">
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <Hero />
   <SocialProof />

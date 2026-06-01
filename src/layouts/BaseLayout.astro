@@ -10,6 +10,7 @@ interface Props {
   description?: string;
   ogImage?: string;
   noindex?: boolean;
+  preloadImage?: string;
 }
 
 const {
@@ -17,6 +18,7 @@ const {
   description = 'Reliable weekly pool cleaning across the Gold Coast — same friendly technician, transparent pricing, and a sparkling pool every Friday. No contracts, no surprises.',
   ogImage = '/images/og-default.jpg',
   noindex = false,
+  preloadImage,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site || 'https://poolpals.com.au').toString();
@@ -30,6 +32,7 @@ const schema = localBusinessSchema();
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  {preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
   <link rel="canonical" href={canonical} />
   {noindex && <meta name="robots" content="noindex, nofollow" />}
 

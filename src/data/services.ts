@@ -333,7 +333,7 @@ export const services: Service[] = [
     includes: ['Electronic leak detection', 'Dye & pressure testing', 'Written findings report', 'Repair quote provided'],
     featured: false,
     metaTitle: 'Pool Leak Detection & Repair Gold Coast | Pool Pals',
-    metaDescription: 'Gold Coast pool leak detection using electronic equipment, dye testing and pressure testing. Pinpoint the leak, get a written report and a repair quote. No guesswork.',
+    metaDescription: 'Gold Coast pool leak detection — electronic, dye and pressure testing to pinpoint the leak. Written report and repair quote. No guesswork.',
     heading: 'Find the leak before it finds your water bill',
     intro: 'If your pool is dropping more than evaporation explains, it is leaking somewhere — the shell, the plumbing, a fitting, or the equipment pad. We pinpoint exactly where with electronic detection and dye testing, then quote the fix.',
     body: [
@@ -379,7 +379,7 @@ export const services: Service[] = [
     includes: ['Equipment condition report', 'Shell & surface check', 'Leak & plumbing assessment', 'Same-week turnaround'],
     featured: false,
     metaTitle: 'Pre-Purchase Pool Inspection Gold Coast | Pool Pals',
-    metaDescription: 'Buying a Gold Coast home with a pool? Get an independent pre-purchase pool inspection — equipment, shell, plumbing and likely costs — before you sign. Same-week turnaround.',
+    metaDescription: 'Buying a Gold Coast home with a pool? Get an independent pre-purchase pool inspection — equipment, shell, plumbing and costs — before you sign.',
     heading: 'Know the pool before you buy the house',
     intro: 'A building and pest inspection rarely tells you much about the pool. A tired pump, a failing chlorinator, a cracked shell or a hidden leak can be thousands you did not budget for. We inspect the pool independently so you buy with your eyes open.',
     body: [

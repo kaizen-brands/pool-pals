@@ -1,5 +1,6 @@
 ---
 title: 'Why Is My Pool Green? The 5 Most Common Causes (And How to Fix Them)'
+seoTitle: 'Why Is My Pool Green? Causes & Fixes | Pool Pals'
 description: "A green pool is every Gold Coast homeowner's nightmare. Here are the five most common causes — and exactly what your pool technician should do about each one."
 pubDate: 2025-02-20
 author: 'Dave Harrison'

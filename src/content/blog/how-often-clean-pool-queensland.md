@@ -1,5 +1,6 @@
 ---
 title: 'How Often Should You Clean Your Pool in Queensland?'
+seoTitle: 'How Often to Clean a Pool in QLD | Pool Pals'
 description: "The Gold Coast climate means your pool needs different care in summer vs winter. Here's the exact schedule we recommend — and why."
 pubDate: 2025-03-10
 author: 'Marcus Chen'

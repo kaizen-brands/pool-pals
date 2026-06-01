@@ -73,9 +73,9 @@ export function Footer() {
         <span>© 2026 Pool Pals Pty Ltd · ABN 41 638 902 117</span>
         <span className="font-mono uppercase tracking-widest">Built on the Gold Coast · QLD 4218</span>
         <span className="flex gap-5">
-          <a href="#" className="hover:text-white">Privacy</a>
-          <a href="#" className="hover:text-white">Terms</a>
-          <a href="#" className="hover:text-white">Insurance</a>
+          <a href="/privacy" className="hover:text-white">Privacy</a>
+          <a href="/terms" className="hover:text-white">Terms</a>
+          <a href="/contact" className="hover:text-white">Insurance</a>
         </span>
       </div>
     </footer>

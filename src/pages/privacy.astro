@@ -1,0 +1,38 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const title = 'Privacy Policy | Pool Pals';
+const description = 'How Pool Pals collects, uses, and protects your personal information when you request a quote or use our Gold Coast pool services.';
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="pt-16 pb-24">
+    <div class="container-narrow">
+      <div class="section-eyebrow eyebrow"><span class="dot"></span>Legal</div>
+      <h1 class="font-display text-[clamp(36px,4.5vw,60px)] leading-[1.04] mb-4">Privacy Policy</h1>
+      <p class="text-ink-mute mb-10">Last updated: June 2025</p>
+
+      <div class="prose prose-lg max-w-none text-ink-soft space-y-6">
+        <p>Pool Pals Pty Ltd (ABN 41 638 902 117) ("we", "us", "our") is committed to protecting your privacy. This policy explains how we handle personal information in line with the Australian Privacy Principles under the <em>Privacy Act 1988</em> (Cth).</p>
+
+        <h2 class="font-display text-2xl text-ink mt-10">What we collect</h2>
+        <p>When you request a quote, book a service, or contact us, we may collect your name, email address, phone number, suburb or property address, and details about your pool. We do not collect payment card details through this website.</p>
+
+        <h2 class="font-display text-2xl text-ink mt-10">How we use it</h2>
+        <p>We use your information to provide quotes, schedule and deliver pool services, send service-related communications (such as photo reports and confirmations), and respond to your enquiries. We do not sell your personal information to third parties.</p>
+
+        <h2 class="font-display text-2xl text-ink mt-10">Who we share it with</h2>
+        <p>We may share information with trusted service providers who help us operate — for example, email delivery and hosting providers — and only to the extent needed to provide our services. For pool safety certificate work, relevant details may be lodged with the Queensland Building and Construction Commission (QBCC) as required by law.</p>
+
+        <h2 class="font-display text-2xl text-ink mt-10">Analytics &amp; cookies</h2>
+        <p>We use privacy-friendly, cookie-less analytics to understand how our site is used. This does not identify you personally.</p>
+
+        <h2 class="font-display text-2xl text-ink mt-10">Your rights</h2>
+        <p>You can request access to, or correction of, the personal information we hold about you, or ask us to delete it, by contacting us. We will respond within a reasonable time.</p>
+
+        <h2 class="font-display text-2xl text-ink mt-10">Contact us</h2>
+        <p>For any privacy questions or requests, email <a href="mailto:hello@poolpals.com.au" class="text-aqua-deep underline underline-offset-2">hello@poolpals.com.au</a> or call 1300 766 572.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

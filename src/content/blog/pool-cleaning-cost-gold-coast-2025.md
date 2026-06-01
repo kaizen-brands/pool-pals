@@ -1,5 +1,6 @@
 ---
 title: 'How Much Does Pool Cleaning Cost on the Gold Coast in 2025?'
+seoTitle: 'Pool Cleaning Cost Gold Coast 2025 | Pool Pals'
 description: 'A complete breakdown of pool cleaning prices on the Gold Coast — what you should expect to pay, what drives cost, and how to avoid getting ripped off.'
 pubDate: 2025-01-15
 author: 'Dave Harrison'

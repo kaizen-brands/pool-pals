@@ -15,11 +15,25 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = post;
 
-const title = `${post.frontmatter.title} | Pool Pals Blog`;
-const description = post.frontmatter.description;
+const fm = post.frontmatter;
+const title = fm.seoTitle ?? `${fm.title} | Pool Pals`;
+const description = fm.description;
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: fm.title,
+  description: fm.description,
+  author: { '@type': 'Person', name: fm.author },
+  publisher: { '@type': 'Organization', name: 'Pool Pals' },
+  datePublished: new Date(fm.pubDate).toISOString(),
+  ...(fm.updatedDate ? { dateModified: new Date(fm.updatedDate).toISOString() } : {}),
+  mainEntityOfPage: new URL(Astro.url.pathname, Astro.site || 'https://poolpals.com.au').toString(),
+};
 ---
 
 <BaseLayout title={title} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
   <article class="pt-16 pb-24">
     <div class="container-narrow">
       <div class="mb-10">
