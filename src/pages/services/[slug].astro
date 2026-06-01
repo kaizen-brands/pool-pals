@@ -80,6 +80,39 @@ const schemas = [serviceSchema(service), faqPageSchema(service.faqs)];
     </div>
   </section>
 
+  {service.signs && service.signs.length > 0 && (
+    <section class="pb-16">
+      <div class="container-narrow">
+        <h2 class="font-display text-[28px] leading-tight mb-6">Common signs you need {service.title.toLowerCase()}</h2>
+        <ul class="grid sm:grid-cols-2 gap-3">
+          {service.signs.map((s) => (
+            <li class="card p-5 flex items-start gap-3 text-[15px] text-ink-soft">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-[var(--color-aqua-deep)] shrink-0 mt-0.5">
+                <path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>
+              </svg>
+              {s}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <section class="pb-16">
+    <div class="container-narrow">
+      <h2 class="font-display text-[28px] leading-tight mb-6">How it works</h2>
+      <ol class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {service.process.map((p, i) => (
+          <li class="card p-6">
+            <div class="font-display text-[28px] text-aqua-deep leading-none mb-3">{String(i + 1).padStart(2, '0')}</div>
+            <h3 class="font-display text-lg leading-tight mb-1.5">{p.step}</h3>
+            <p class="text-sm text-ink-soft leading-relaxed">{p.detail}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
   <section class="pb-16">
     <div class="container-narrow">
       <h2 class="font-display text-[28px] leading-tight mb-6">Common questions</h2>

@@ -31,6 +31,8 @@ export interface Service {
   intro: string;
   body: string[];
   detailFeatures: string[];
+  process: { step: string; detail: string }[];
+  signs?: string[];
   faqs: FAQItem[];
   keywords: string[];
 }
