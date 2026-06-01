@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# Sync canonical docs from Kaizen (kb-repo-doc-sync)
+bash scripts/sync-from-kaizen.sh
