@@ -3,17 +3,41 @@ import type { QuoteData } from '@/types';
 
 const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
+const poolSizeLabels: Record<string, string> = {
+  small: 'Small (up to 30,000L)',
+  medium: 'Medium (30,000-60,000L)',
+  large: 'Large (60,000-100,000L)',
+  xl: 'Extra large (100,000L+)',
+  'not-sure': 'Not sure',
+};
+
+const poolTypeLabels: Record<string, string> = {
+  chlorine: 'Chlorine',
+  salt: 'Salt water',
+  mineral: 'Mineral / magnesium',
+  'not-sure': 'Not sure',
+};
+
+const frequencyLabels: Record<string, string> = {
+  weekly: 'Weekly',
+  fortnightly: 'Fortnightly',
+  'twice-weekly': 'Twice a week',
+  'once-off': 'One-off / rescue',
+};
+
+const escapeHtml = (value: string): string =>
+  value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
 export async function sendQuoteEmail(data: QuoteData, estimatedPrice: number) {
   const from = import.meta.env.RESEND_FROM_EMAIL || 'Pool Pals <quotes@poolpals.com.au>';
   const to = [data.email];
   const bcc = import.meta.env.QUOTE_RECIPIENT ? [import.meta.env.QUOTE_RECIPIENT] : [];
-
-  const extrasLabels: Record<string, string> = {
-    heater: 'Pool heater',
-    salt: 'Salt chlorinator',
-    water_features: 'Water features',
-    automation: 'Automation system',
-  };
+  const notes = data.notes.trim();
 
   const html = `
     <!DOCTYPE html>
@@ -30,7 +54,7 @@ export async function sendQuoteEmail(data: QuoteData, estimatedPrice: number) {
       </div>
       
       <div style="background: #f8f9fa; border-radius: 14px; padding: 24px; margin-bottom: 24px;">
-        <h2 style="margin: 0 0 16px; font-size: 20px;">Hi ${data.name}, here's your quote</h2>
+        <h2 style="margin: 0 0 16px; font-size: 20px;">Hi ${escapeHtml(data.name)}, here's your quote</h2>
         <p style="margin: 0; color: #555;">Thanks for getting in touch! Based on your pool details, here's your estimated pricing:</p>
       </div>
       
@@ -44,12 +68,11 @@ export async function sendQuoteEmail(data: QuoteData, estimatedPrice: number) {
         
         <h3 style="font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin: 0 0 12px;">Your details</h3>
         <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: #555;">
-          <li style="padding: 4px 0;">Pool size: ${data.poolSize}</li>
-          <li style="padding: 4px 0;">Pool type: ${data.poolType}</li>
-          <li style="padding: 4px 0;">Frequency: ${data.frequency}</li>
-          <li style="padding: 4px 0;">Suburb: ${data.suburb}</li>
-          <li style="padding: 4px 0;">Condition: ${data.condition}</li>
-          ${data.extras.length > 0 ? `<li style="padding: 4px 0;">Extras: ${data.extras.map(e => extrasLabels[e] || e).join(', ')}</li>` : ''}
+          <li style="padding: 4px 0;">Pool size: ${escapeHtml(poolSizeLabels[data.approxSize] ?? data.approxSize)}</li>
+          <li style="padding: 4px 0;">Pool type: ${escapeHtml(poolTypeLabels[data.poolType] ?? data.poolType)}</li>
+          <li style="padding: 4px 0;">Frequency: ${escapeHtml(frequencyLabels[data.frequency] ?? data.frequency)}</li>
+          <li style="padding: 4px 0;">Postcode: ${escapeHtml(data.postcode)}</li>
+          ${notes ? `<li style="padding: 4px 0;">Notes: ${escapeHtml(notes)}</li>` : ''}
         </ul>
       </div>
       

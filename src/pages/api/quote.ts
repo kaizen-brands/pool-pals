@@ -1,18 +1,24 @@
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
 import { sendQuoteEmail } from '@/lib/resend';
+import type { QuoteData } from '@/types';
 
 export const prerender = false;
 
-function estimatePrice(frequency: string): number {
-  const prices: Record<string, number> = {
-    weekly: 55,
-    fortnightly: 45,
-    'twice-weekly': 89,
-    'once-off': 129,
-  };
-  return prices[frequency?.toLowerCase()] ?? 55;
-}
+const FREQUENCY_PRICE: Record<string, number> = {
+  weekly: 55,
+  fortnightly: 45,
+  'twice-weekly': 89,
+  'once-off': 129,
+};
+
+const escapeHtml = (value: string): string =>
+  value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 
 export const POST: APIRoute = async ({ request }) => {
   const apiKey = import.meta.env.RESEND_API_KEY;
@@ -26,7 +32,7 @@ export const POST: APIRoute = async ({ request }) => {
   const resend = new Resend(apiKey);
 
   try {
-    const body = await request.json();
+    const body = (await request.json()) as QuoteData;
     const { frequency, poolType, approxSize, postcode, name, email, phone, notes } = body;
 
     if (!name || !email || !phone || !postcode || !frequency) {
@@ -44,14 +50,14 @@ export const POST: APIRoute = async ({ request }) => {
       html: `
         <h2>New Pool Pals Quote Request</h2>
         <table style="border-collapse:collapse;width:100%;max-width:500px">
-          <tr><td style="padding:8px;border:1px solid #ddd"><strong>Name</strong></td><td style="padding:8px;border:1px solid #ddd">${name}</td></tr>
-          <tr><td style="padding:8px;border:1px solid #ddd"><strong>Email</strong></td><td style="padding:8px;border:1px solid #ddd">${email}</td></tr>
-          <tr><td style="padding:8px;border:1px solid #ddd"><strong>Phone</strong></td><td style="padding:8px;border:1px solid #ddd">${phone}</td></tr>
-          <tr><td style="padding:8px;border:1px solid #ddd"><strong>Postcode</strong></td><td style="padding:8px;border:1px solid #ddd">${postcode}</td></tr>
-          <tr><td style="padding:8px;border:1px solid #ddd"><strong>Frequency</strong></td><td style="padding:8px;border:1px solid #ddd">${frequency}</td></tr>
-          <tr><td style="padding:8px;border:1px solid #ddd"><strong>Pool Type</strong></td><td style="padding:8px;border:1px solid #ddd">${poolType || 'Not specified'}</td></tr>
-          <tr><td style="padding:8px;border:1px solid #ddd"><strong>Pool Size</strong></td><td style="padding:8px;border:1px solid #ddd">${approxSize || 'Not specified'}</td></tr>
-          <tr><td style="padding:8px;border:1px solid #ddd"><strong>Notes</strong></td><td style="padding:8px;border:1px solid #ddd">${notes || 'None'}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd"><strong>Name</strong></td><td style="padding:8px;border:1px solid #ddd">${escapeHtml(name)}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd"><strong>Email</strong></td><td style="padding:8px;border:1px solid #ddd">${escapeHtml(email)}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd"><strong>Phone</strong></td><td style="padding:8px;border:1px solid #ddd">${escapeHtml(phone)}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd"><strong>Postcode</strong></td><td style="padding:8px;border:1px solid #ddd">${escapeHtml(postcode)}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd"><strong>Frequency</strong></td><td style="padding:8px;border:1px solid #ddd">${escapeHtml(frequency)}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd"><strong>Pool Type</strong></td><td style="padding:8px;border:1px solid #ddd">${escapeHtml(poolType || 'Not specified')}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd"><strong>Pool Size</strong></td><td style="padding:8px;border:1px solid #ddd">${escapeHtml(approxSize || 'Not specified')}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd"><strong>Notes</strong></td><td style="padding:8px;border:1px solid #ddd">${escapeHtml(notes || 'None')}</td></tr>
         </table>
       `,
     });
@@ -64,20 +70,8 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    const customerEmailResult = await sendQuoteEmail(
-      {
-        name,
-        email,
-        phone,
-        frequency,
-        poolType: poolType || '',
-        poolSize: approxSize || '',
-        suburb: postcode,
-        condition: notes || '',
-        extras: [],
-      },
-      estimatePrice(frequency),
-    );
+    const estimatedPrice = FREQUENCY_PRICE[frequency] ?? 55;
+    const customerEmailResult = await sendQuoteEmail(body, estimatedPrice);
 
     if (customerEmailResult.error) {
       console.error('Customer confirmation email error:', customerEmailResult.error);
