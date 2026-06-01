@@ -1,62 +1,10 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { services } from '@/data/services';
+import { iconMap } from '@/lib/icons';
 
-const title = 'Pool Cleaning Services — Gold Coast | Pool Pals';
-const description = 'Weekly pool cleaning, chemical balancing, equipment checks, and green pool recovery across the Gold Coast. All chemicals included. No contracts.';
-
-const services = [
-  {
-    title: 'Weekly pool cleaning',
-    price: 'from $45/visit',
-    features: [
-      'Skim surface debris',
-      'Brush walls and floor',
-      'Vacuum pool bottom',
-      'Empty skimmer and pump baskets',
-      'Backwash filter (as needed)',
-      'Check equipment operation',
-      'Photo report after each visit',
-    ],
-    detail: 'Our bread and butter. Every visit follows a 22-point checklist developed over 9 years and 70,000+ cleans. Your technician arrives the same day, same time — you set the schedule.',
-  },
-  {
-    title: 'Chemical balancing',
-    price: 'included in all plans',
-    features: [
-      '6-point water test (pH, chlorine, alkalinity, calcium, stabiliser, salt)',
-      'On-the-spot chemical adjustment',
-      'Salt cell inspection',
-      'Logged in your customer dashboard',
-      'Seasonal adjustment protocols',
-    ],
-    detail: "We don't guess. Every visit includes lab-grade testing with digital meters. Your water chemistry is logged and trended — we spot problems before they become green pools.",
-  },
-  {
-    title: 'Equipment health checks',
-    price: 'included quarterly',
-    features: [
-      'Pump pressure and flow rate',
-      'Filter condition assessment',
-      'Chlorinator cell output',
-      'Heater efficiency check',
-      'Valve and plumbing inspection',
-      'Parts quote if needed (trade pricing)',
-    ],
-    detail: 'Small problems become big bills. Our quarterly equipment audit catches worn seals, declining pressure, and early chlorinator failure — typically saving $400–$1,200 in emergency repairs.',
-  },
-  {
-    title: 'Green pool recovery',
-    price: 'from $129 flat fee',
-    features: [
-      'Full water analysis and diagnosis',
-      'Shock treatment and flocculant',
-      'Intensive filter running schedule',
-      'Daily progress monitoring (3–5 days)',
-      'No-recovery, no-charge guarantee',
-    ],
-    detail: "Storm hit? Pool neglected? Pump failed while you were overseas? Most green pools are fully clear within 3–5 days. We fix the water and the root cause — so it doesn't happen again.",
-  },
-];
+const title = 'Pool Services — Gold Coast | Pool Pals';
+const description = 'Weekly cleaning, chemical balancing, green pool recovery, equipment repairs, leak detection, and Form 23 pool safety certificates across the Gold Coast. No contracts.';
 ---
 
 <BaseLayout title={title} description={description}>
@@ -67,42 +15,39 @@ const services = [
         Everything your pool <span class="text-aqua-deep italic">needs.</span>
       </h1>
       <p class="text-lg text-ink-soft leading-relaxed max-w-[640px] mb-12">
-        Four services. One team. No upsells, no bait-and-switch, no "while I'm here" surprises.
-        Honest work for the people who actually live with the pool.
+        One team for the whole Coast — from weekly cleaning and water chemistry to leak detection,
+        equipment, and Form 23 pool safety certificates. No upsells, no bait-and-switch, no
+        "while I'm here" surprises.
       </p>
     </div>
   </section>
 
   <section class="pb-24">
     <div class="container-narrow">
-      <div class="grid gap-8">
-        {services.map((s) => (
-          <div class="card p-8 md:p-10">
-            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-5">
-              <div>
-                <h2 class="font-display text-[28px] leading-tight mb-1">{s.title}</h2>
+      <div class="grid sm:grid-cols-2 gap-6">
+        {services.map((s) => {
+          const Icon = iconMap[s.icon] ?? iconMap.Filter;
+          return (
+            <a href={`/services/${s.slug}`} class="card p-7 block hover:border-[var(--color-aqua)] transition-colors group">
+              <div class="flex items-start justify-between mb-4">
+                <div class="h-12 w-12 rounded-lg bg-aqua-soft flex items-center justify-center text-aqua-deep">
+                  <Icon className="h-6 w-6" />
+                </div>
                 <span class="text-sm font-medium text-[var(--color-aqua-deep)]">{s.price}</span>
               </div>
-              <button class="btn btn-primary btn-sm shrink-0" data-action="quote">
-                Get a quote
-              </button>
-            </div>
-            <p class="text-ink-soft leading-relaxed mb-5 max-w-[720px]">{s.detail}</p>
-            <ul class="grid sm:grid-cols-2 gap-2.5">
-              {s.features.map((f) => (
-                <li class="flex items-start gap-2.5 text-sm text-ink-soft">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 text-[var(--color-success)] shrink-0 mt-0.5">
-                    <path d="M4 12.5l5 5L20 6.5"/>
-                  </svg>
-                  {f}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+              <h2 class="font-display text-[22px] leading-tight mb-2 group-hover:text-[var(--color-aqua-deep)] transition-colors">{s.title}</h2>
+              <p class="text-[15px] text-ink-soft leading-relaxed mb-4">{s.blurb}</p>
+              <span class="inline-flex items-center gap-1 text-sm font-medium text-aqua-deep">
+                Learn more
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                  <path d="M5 12h14M13 6l6 6-6 6"/>
+                </svg>
+              </span>
+            </a>
+          );
+        })}
       </div>
 
-      <!-- CTA -->
       <div class="mt-12 text-center">
         <p class="text-ink-soft mb-4">Not sure which service you need?</p>
         <button class="btn btn-aqua" data-action="quote">

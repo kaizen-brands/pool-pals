@@ -17,11 +17,22 @@ export interface Review {
 }
 
 export interface Service {
+  slug: string;
   icon: string;
   title: string;
-  desc: string;
-  tag?: string;
-  bullets: string[];
+  price: string;
+  priceValue?: number;
+  blurb: string;
+  includes: string[];
+  featured: boolean;
+  metaTitle: string;
+  metaDescription: string;
+  heading: string;
+  intro: string;
+  body: string[];
+  detailFeatures: string[];
+  faqs: FAQItem[];
+  keywords: string[];
 }
 
 export interface PricingTier {

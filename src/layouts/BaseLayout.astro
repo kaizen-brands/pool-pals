@@ -74,6 +74,15 @@ const schema = localBusinessSchema();
     document.addEventListener('quote-wizard-state', (e) => {
       quoteOpen = e.detail;
     });
+
+    // Any [data-action="quote"] button opens the wizard, site-wide
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-action="quote"]');
+      if (btn) {
+        e.preventDefault();
+        window.dispatchEvent(new CustomEvent('open-quote-wizard'));
+      }
+    });
   </script>
 </body>
 </html>

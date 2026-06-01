@@ -1,61 +1,8 @@
 ---
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { 
-  Filter, 
-  FlaskConical, 
-  Leaf, 
-  SlidersHorizontal, 
-  Calendar, 
-  ShieldCheck,
-  Check,
-  ArrowRight
-} from 'lucide-react';
-
-const services = [
-  {
-    icon: Filter,
-    title: 'Weekly Pool Service',
-    price: 'from $55/wk',
-    blurb: 'Skim, vacuum, brush, basket clear, water test & dose, equipment check. The whole nine.',
-    includes: ['Surface skim & wall brush', 'Vacuum & basket clear', '11-point water test', 'Chemical dose & log'],
-  },
-  {
-    icon: FlaskConical,
-    title: 'Chemical Balancing',
-    price: 'from $35',
-    blurb: 'Lab-grade test on 11 markers. Calibrated dosing, written log, photo proof.',
-    includes: ['pH, chlorine, alkalinity', 'Calcium hardness, CYA', 'Phosphate & metals', 'Photo + email log'],
-  },
-  {
-    icon: Leaf,
-    title: 'Green Pool Recovery',
-    price: 'from $290',
-    blurb: 'Algae, black water, post-storm sludge — back to swim-ready in 3–5 days, fixed price.',
-    includes: ['Initial shock & flocc', 'Daily checks for 5 days', 'Filter deep clean', 'Crystal-clear guarantee'],
-  },
-  {
-    icon: SlidersHorizontal,
-    title: 'Equipment & Repairs',
-    price: 'quoted',
-    blurb: 'Pumps, filters, salt cells, heaters, chlorinators. Diagnose, quote, fix.',
-    includes: ['Same-day diagnostics', 'Genuine parts only', '12-month workmanship', 'Authorised on Astralpool, Davey, Zodiac'],
-  },
-  {
-    icon: Calendar,
-    title: 'Holiday & Airbnb',
-    price: 'from $75/visit',
-    blurb: 'Turnover-aligned visits for short-stay rentals. Photo report after every clean.',
-    includes: ['Same-day-as-checkout slots', 'Guest-ready photo report', 'Towel + chair reset (opt)', 'Owner SMS confirmation'],
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Compliance Inspections',
-    price: '$185',
-    blurb: 'Pre-sale or rental certificate inspections. QBCC-licensed inspectors, full report.',
-    includes: ['Form 23 issued', 'Lodged with QBCC', 'Re-inspection included', '5-day turnaround'],
-  },
-];
+import { Check, ArrowRight } from 'lucide-react';
+import { featuredServices } from '@/data/services';
+import { iconMap } from '@/lib/icons';
 ---
 
 <section id="services" class="py-24">
@@ -74,8 +21,8 @@ const services = [
     </div>
 
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {services.map((s) => {
-        const Icon = s.icon;
+      {featuredServices.map((s) => {
+        const Icon = iconMap[s.icon] ?? iconMap.Filter;
         return (
           <div class="group rounded-xl border bg-card text-card-foreground shadow-sm hover:border-aqua/50 hover:shadow-md transition-all p-6">
             <div class="flex items-start justify-between mb-4">
@@ -94,12 +41,20 @@ const services = [
                 </li>
               ))}
             </ul>
-            <button 
-              data-action="quote"
-              class="inline-flex items-center gap-1 text-sm font-medium text-aqua-deep hover:text-aqua transition-colors"
-            >
-              Get a quote <ArrowRight className="h-4 w-4" />
-            </button>
+            <div class="flex items-center justify-between">
+              <button
+                data-action="quote"
+                class="inline-flex items-center gap-1 text-sm font-medium text-aqua-deep hover:text-aqua transition-colors"
+              >
+                Get a quote <ArrowRight className="h-4 w-4" />
+              </button>
+              <a
+                href={`/services/${s.slug}`}
+                class="text-sm font-medium text-ink-mute hover:text-aqua-deep transition-colors"
+              >
+                Learn more →
+              </a>
+            </div>
           </div>
         );
       })}

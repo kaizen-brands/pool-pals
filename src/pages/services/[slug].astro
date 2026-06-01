@@ -1,0 +1,114 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { ServiceFAQ } from '@/components/sections/ServiceFAQ';
+import { services, getRelatedServices } from '@/data/services';
+import { iconMap } from '@/lib/icons';
+import { serviceSchema, faqPageSchema } from '@/lib/schema';
+
+export const getStaticPaths = (() => {
+  return services.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}) satisfies GetStaticPaths;
+
+const { service } = Astro.props;
+const Icon = iconMap[service.icon] ?? iconMap.Filter;
+const related = getRelatedServices(service.slug);
+const schemas = [serviceSchema(service), faqPageSchema(service.faqs)];
+---
+
+<BaseLayout title={service.metaTitle} description={service.metaDescription}>
+  {schemas.map((schema) => (
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  ))}
+
+  <section class="pt-16 pb-12">
+    <div class="container-narrow">
+      <nav class="text-sm text-ink-mute mb-8 flex items-center gap-2" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[var(--color-aqua-deep)]">Home</a>
+        <span>›</span>
+        <a href="/services" class="hover:text-[var(--color-aqua-deep)]">Services</a>
+        <span>›</span>
+        <span class="text-ink-soft">{service.title}</span>
+      </nav>
+
+      <div class="section-eyebrow eyebrow"><span class="dot"></span>Gold Coast</div>
+      <div class="flex items-start gap-4 mb-6">
+        <div class="h-14 w-14 rounded-xl bg-aqua-soft flex items-center justify-center text-aqua-deep shrink-0">
+          <Icon className="h-7 w-7" />
+        </div>
+        <h1 class="font-display text-[clamp(36px,4.5vw,60px)] leading-[1.04]">
+          {service.heading}
+        </h1>
+      </div>
+
+      <p class="text-lg text-ink-soft leading-relaxed max-w-[680px] mb-6">{service.intro}</p>
+
+      <div class="flex flex-wrap items-center gap-4">
+        <span class="text-base font-medium text-[var(--color-aqua-deep)]">{service.price}</span>
+        <button class="btn btn-primary" data-action="quote">Get a quote</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-16">
+    <div class="container-narrow">
+      <div class="card p-8 md:p-10">
+        <div class="grid md:grid-cols-2 gap-10">
+          <div>
+            <h2 class="font-display text-[26px] leading-tight mb-4">What's included</h2>
+            <ul class="grid gap-2.5">
+              {service.detailFeatures.map((f) => (
+                <li class="flex items-start gap-2.5 text-[15px] text-ink-soft">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 text-[var(--color-success)] shrink-0 mt-1">
+                    <path d="M4 12.5l5 5L20 6.5"/>
+                  </svg>
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="space-y-4">
+            {service.body.map((p) => (
+              <p class="text-ink-soft leading-relaxed">{p}</p>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-16">
+    <div class="container-narrow">
+      <h2 class="font-display text-[28px] leading-tight mb-6">Common questions</h2>
+      <ServiceFAQ client:visible faqs={service.faqs} />
+    </div>
+  </section>
+
+  <section class="pb-24">
+    <div class="container-narrow">
+      <h2 class="font-display text-[24px] leading-tight mb-6">Other services</h2>
+      <div class="grid sm:grid-cols-3 gap-4">
+        {related.map((r) => {
+          const RIcon = iconMap[r.icon] ?? iconMap.Filter;
+          return (
+            <a href={`/services/${r.slug}`} class="card p-5 hover:border-[var(--color-aqua)] transition-colors block">
+              <div class="h-10 w-10 rounded-lg bg-aqua-soft flex items-center justify-center text-aqua-deep mb-3">
+                <RIcon className="h-5 w-5" />
+              </div>
+              <h3 class="font-display text-lg leading-tight mb-1">{r.title}</h3>
+              <p class="text-sm text-ink-mute">{r.price}</p>
+            </a>
+          );
+        })}
+      </div>
+
+      <div class="mt-12 text-center">
+        <p class="text-ink-soft mb-4">Ready to get started?</p>
+        <button class="btn btn-aqua" data-action="quote">Get a free quote</button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

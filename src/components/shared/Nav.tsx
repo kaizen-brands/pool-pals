@@ -28,11 +28,11 @@ export function Nav() {
   };
 
   const links = [
-    { label: 'Services', href: '#services' },
-    { label: 'Pricing', href: '#pricing' },
-    { label: 'How it works', href: '#how-it-works' },
-    { label: 'Service Area', href: '#service-area' },
-    { label: 'FAQ', href: '#faq' },
+    { label: 'Services', href: '/services' },
+    { label: 'Pricing', href: '/#pricing' },
+    { label: 'How it works', href: '/#how-it-works' },
+    { label: 'Service Area', href: '/#service-area' },
+    { label: 'FAQ', href: '/#faq' },
   ];
 
   return (

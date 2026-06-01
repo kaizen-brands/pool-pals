@@ -27,14 +27,3 @@ const description = 'Reliable weekly pool cleaning across the Gold Coast. Same f
   <FAQ client:load />
   <FinalCTA />
 </BaseLayout>
-
-<script>
-  // Wire up quote buttons to open the QuoteWizard dialog
-  document.addEventListener('click', (e) => {
-    const btn = (e.target as HTMLElement).closest('[data-action="quote"]');
-    if (btn) {
-      e.preventDefault();
-      window.dispatchEvent(new CustomEvent('open-quote-wizard'));
-    }
-  });
-</script>

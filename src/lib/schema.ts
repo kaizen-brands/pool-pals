@@ -1,4 +1,5 @@
-import type { LocalBusiness, FAQPage, WithContext } from 'schema-dts';
+import type { LocalBusiness, FAQPage, Service as ServiceSchemaType, WithContext } from 'schema-dts';
+import type { Service } from '@/types';
 
 export function localBusinessSchema(): WithContext<LocalBusiness> {
   return {
@@ -57,6 +58,42 @@ export function localBusinessSchema(): WithContext<LocalBusiness> {
       'https://g.co/kgs/poolpals',
     ],
   };
+}
+
+export function serviceSchema(service: Service): WithContext<ServiceSchemaType> {
+  const schema: WithContext<ServiceSchemaType> = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: service.title,
+    description: service.metaDescription,
+    serviceType: service.title,
+    provider: {
+      '@type': 'LocalBusiness',
+      name: 'Pool Pals',
+      url: 'https://poolpals.com.au',
+      telephone: '+611300766572',
+    },
+    areaServed: {
+      '@type': 'GeoCircle',
+      geoMidpoint: {
+        '@type': 'GeoCoordinates',
+        latitude: '-28.0167',
+        longitude: '153.4000',
+      },
+      geoRadius: '50km',
+    },
+  };
+
+  if (service.priceValue !== undefined) {
+    schema.offers = {
+      '@type': 'Offer',
+      price: service.priceValue,
+      priceCurrency: 'AUD',
+      url: `https://poolpals.com.au/services/${service.slug}`,
+    };
+  }
+
+  return schema;
 }
 
 export function faqPageSchema(faqs: Array<{ q: string; a: string }>): WithContext<FAQPage> {

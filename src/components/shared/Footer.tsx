@@ -3,9 +3,36 @@ import { Phone, Mail, MapPin } from 'lucide-react';
 
 export function Footer() {
   const cols = [
-    { h: 'Services', l: ['Weekly cleaning', 'Chemical balancing', 'Equipment checks', 'Green pool recovery', 'Holiday rentals'] },
-    { h: 'Company', l: ['About', 'Service areas', 'Reviews', 'Blog & guides', 'Careers'] },
-    { h: 'Help', l: ['Pricing', 'FAQ', 'Contact', 'Customer dashboard', 'Refer a mate'] },
+    {
+      h: 'Services',
+      l: [
+        { label: 'Weekly cleaning', href: '/services/weekly-pool-cleaning' },
+        { label: 'Green pool recovery', href: '/services/green-pool-recovery' },
+        { label: 'Pool safety certificates', href: '/services/pool-safety-certificate' },
+        { label: 'Leak detection', href: '/services/pool-leak-detection' },
+        { label: 'Equipment repairs', href: '/services/equipment-repairs' },
+      ],
+    },
+    {
+      h: 'Company',
+      l: [
+        { label: 'About', href: '/about' },
+        { label: 'Service areas', href: '/#service-area' },
+        { label: 'Reviews', href: '/reviews' },
+        { label: 'Blog & guides', href: '/blog' },
+        { label: 'All services', href: '/services' },
+      ],
+    },
+    {
+      h: 'Help',
+      l: [
+        { label: 'Pricing', href: '/#pricing' },
+        { label: 'FAQ', href: '/#faq' },
+        { label: 'Contact', href: '/contact' },
+        { label: 'Customer dashboard', href: '#' },
+        { label: 'Refer a mate', href: '#' },
+      ],
+    },
   ];
 
   return (
@@ -33,8 +60,8 @@ export function Footer() {
             <div className="text-xs font-mono uppercase tracking-widest text-aqua mb-4 font-semibold">{c.h}</div>
             <ul className="space-y-2.5">
               {c.l.map((it) => (
-                <li key={it}>
-                  <a href="#" className="text-sm text-aqua-soft/80 hover:text-white transition-colors">{it}</a>
+                <li key={it.label}>
+                  <a href={it.href} className="text-sm text-aqua-soft/80 hover:text-white transition-colors">{it.label}</a>
                 </li>
               ))}
             </ul>
