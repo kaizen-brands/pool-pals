@@ -19,16 +19,24 @@ const fm = post.frontmatter;
 const title = fm.seoTitle ?? `${fm.title} | Pool Pals`;
 const description = fm.description;
 
+const SITE = Astro.site?.toString().replace(/\/$/, '') ?? 'https://poolpals.com.au';
+const imageUrl = new URL(fm.coverImage ?? '/images/og-default.jpg', SITE).toString();
+
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
   headline: fm.title,
   description: fm.description,
+  image: imageUrl,
   author: { '@type': 'Person', name: fm.author },
-  publisher: { '@type': 'Organization', name: 'Pool Pals' },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Pool Pals',
+    logo: { '@type': 'ImageObject', url: new URL('/images/og-default.jpg', SITE).toString() },
+  },
   datePublished: new Date(fm.pubDate).toISOString(),
   ...(fm.updatedDate ? { dateModified: new Date(fm.updatedDate).toISOString() } : {}),
-  mainEntityOfPage: new URL(Astro.url.pathname, Astro.site || 'https://poolpals.com.au').toString(),
+  mainEntityOfPage: new URL(Astro.url.pathname, SITE).toString(),
 };
 ---
 

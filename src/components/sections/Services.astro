@@ -50,10 +50,10 @@ import { iconMap } from '@/lib/icons';
               </button>
               <a
                 href={`/services/${s.slug}`}
-                aria-label={`Learn more about ${s.title}`}
                 class="text-sm font-medium text-ink-mute hover:text-aqua-deep transition-colors"
               >
-                Learn more →
+                Learn more<span class="sr-only"> about {s.title}</span>
+                <span aria-hidden="true"> →</span>
               </a>
             </div>
           </div>
