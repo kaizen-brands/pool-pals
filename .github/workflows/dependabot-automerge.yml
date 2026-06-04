@@ -1,18 +1,23 @@
-name: Dependabot auto-merge (minor/patch)
-on: pull_request
+name: Dependabot Auto-Merge
+
+on:
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: write
   pull-requests: write
 
+concurrency:
+  group: dependabot-automerge-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   automerge:
+    name: automerge
     if: github.actor == 'dependabot[bot]'
-    # Self-hosted Hetzner runner — GitHub-hosted minutes are exhausted, which
-    # silently prevented this workflow from ever running (and therefore from
-    # ever enabling auto-merge on Dependabot PRs). Single gh-CLI step; trivial
-    # for the box.
     runs-on: [self-hosted, linux, x64, hetzner-cx23]
+    timeout-minutes: 5
     steps:
       - name: Fetch Dependabot metadata
         id: metadata
@@ -20,15 +25,19 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      # gh pr merge --auto waits for required status checks (per branch
-      # protection on `main`) before merging. Branch protection MUST require
-      # the typecheck/build/test workflows for this to be safe — without it,
-      # --auto merges immediately on PR open.
-      - name: Enable auto-merge for minor/patch
-        if: |
-          steps.metadata.outputs.update-type == 'version-update:semver-minor' ||
-          steps.metadata.outputs.update-type == 'version-update:semver-patch'
-        run: gh pr merge --auto --squash --delete-branch "$PR_URL"
+      - name: Queue patch and minor updates for auto-merge
+        if: contains(fromJSON('["version-update:semver-patch", "version-update:semver-minor"]'), steps.metadata.outputs.update-type)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          set -euo pipefail
+          if ! gh pr merge --auto --squash --delete-branch "$PR_URL"; then
+            echo "::error::Dependabot auto-merge could not be queued. Verify that repo auto-merge is enabled and main has required branch protection checks, including source-validate and the primary Vercel context." >&2
+            gh pr checks "$PR_URL" || true
+            exit 1
+          fi
+
+      - name: Skip non-auto-merge update
+        if: ${{ !contains(fromJSON('["version-update:semver-patch", "version-update:semver-minor"]'), steps.metadata.outputs.update-type) }}
+        run: echo "Skipping ${{ steps.metadata.outputs.update-type }}; only semver patch/minor updates auto-merge."

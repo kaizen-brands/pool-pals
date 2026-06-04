@@ -1,33 +1,55 @@
-name: CI · Source
+name: CI Source
 
 on:
   pull_request:
     branches: [main]
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-source-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  validate:
-    name: Astro check
-    # Self-hosted Hetzner runner — see ~/Kaizen/skills/kb-ci-runner/SKILL.md
+  source-validate:
+    name: source-validate
     runs-on: [self-hosted, linux, x64, hetzner-cx23]
     timeout-minutes: 15
     env:
       NODE_OPTIONS: --max-old-space-size=3072
     steps:
-      - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v6
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Configure git line endings
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
-          node-version: 24
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - name: Astro check (typecheck)
+          node-version: '22'
+
+      - name: Install pnpm
+        run: |
+          set -euo pipefail
+          PNPM_SPEC="$(node -p "require('./package.json').packageManager || 'pnpm@10.28.2'")"
+          PNPM_VERSION="${PNPM_SPEC#pnpm@}"
+          PNPM_VERSION="${PNPM_VERSION%%+*}"
+          PNPM_DIR="${RUNNER_TEMP:-$HOME/.local}/pnpm-bin"
+          mkdir -p "$PNPM_DIR"
+          curl -fsSL "https://github.com/pnpm/pnpm/releases/download/v${PNPM_VERSION}/pnpm-linux-x64" -o "$PNPM_DIR/pnpm"
+          chmod +x "$PNPM_DIR/pnpm"
+          echo "$PNPM_DIR" >> "$GITHUB_PATH"
+          "$PNPM_DIR/pnpm" --version
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Astro check
         run: pnpm exec astro check
