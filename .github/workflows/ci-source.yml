@@ -17,7 +17,7 @@ concurrency:
 jobs:
   source-validate:
     name: source-validate
-    runs-on: [self-hosted, linux, x64, hetzner-cx23]
+    runs-on: [self-hosted, Linux, X64, hetzner-cx23, kaizen-brands]
     timeout-minutes: 15
     env:
       NODE_OPTIONS: --max-old-space-size=3072
