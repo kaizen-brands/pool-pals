@@ -16,7 +16,7 @@ jobs:
   automerge:
     name: automerge
     if: github.actor == 'dependabot[bot]'
-    runs-on: [self-hosted, linux, x64, hetzner-cx23]
+    runs-on: [self-hosted, Linux, X64, hetzner-cx23, kaizen-brands]
     timeout-minutes: 5
     steps:
       - name: Fetch Dependabot metadata

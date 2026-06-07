@@ -13,6 +13,14 @@ updates:
 
     # Group PRs to reduce noise — one bundle per category per week.
     groups:
+      react:
+        applies-to: 'version-updates'
+        update-types: ['minor', 'patch']
+        patterns:
+          - 'react'
+          - 'react-dom'
+          - '@types/react'
+          - '@types/react-dom'
       dev-minor-patch:
         applies-to: 'version-updates'
         dependency-type: 'development'
@@ -30,12 +38,7 @@ updates:
           - 'better-auth'
           - '@better-auth/*'
           - 'better-call'
-          # Override-pinned packages (root pnpm.overrides) — Dependabot
-          # PRs would be silently undone by pnpm install.
-          - 'react'
-          - 'react-dom'
-          - '@types/react'
-          - '@types/react-dom'
+          # Runtime-pinned native package; bumps need dedicated runtime review.
           - 'react-native-worklets'
           # Deprecated upstream — needs migration, not bumps.
           - '@react-email/components'
