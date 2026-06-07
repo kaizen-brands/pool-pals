@@ -1,0 +1,39 @@
+# Code-factory HIGH-risk path ownership — VARIANT: astro / static / no-Convex
+# (e.g. astro-starter, speech-sprout, cheeky-panda, royal-essence — Astro/HTML/Shopify
+# sites with no convex/ backend; the "backend" is serverless API routes + config).
+# Drop at .github/CODEOWNERS. Only HIGH-risk paths get an owner; low/medium paths are
+# intentionally UNOWNED so green checks alone permit merge. One high-risk file elevates the
+# whole PR. The HARD gate is .github/workflows/high-risk-guard.yml (required status check);
+# this file is defense-in-depth + documentation. See skills/kb-code-factory.
+#
+# @pauljohnchamberlain (org admin) bypasses via the ruleset + high-risk-guard's author===OWNER
+# logic, so HIS PRs never block here; this gate exists for kaizen-brands-agents[bot] PRs.
+
+# Backend equivalent — serverless / API routes + server config (no Convex here)
+**/pages/api/                  @pauljohnchamberlain
+**/server/                     @pauljohnchamberlain
+**/*.config.*                  @pauljohnchamberlain
+
+# Auth (if present)
+**/auth/                       @pauljohnchamberlain
+**/auth.ts                     @pauljohnchamberlain
+**/better-auth*                @pauljohnchamberlain
+
+# Payments / billing (if present)
+**/stripe*                     @pauljohnchamberlain
+**/payment*                    @pauljohnchamberlain
+**/billing*                    @pauljohnchamberlain
+
+# Infra / CI / secrets / deploy config
+/.github/                      @pauljohnchamberlain
+*.tf                           @pauljohnchamberlain
+**/vercel.json                 @pauljohnchamberlain
+**/wrangler.*                  @pauljohnchamberlain
+**/middleware.*                @pauljohnchamberlain
+**/.env*                       @pauljohnchamberlain
+
+# Dependency manifests (supply chain) — Dependabot's own PRs flow via dependabot-automerge.yml
+# (high-risk-guard exempts dependabot[bot]); this catches MANUAL/agent manifest edits.
+**/package.json                @pauljohnchamberlain
+pnpm-lock.yaml                 @pauljohnchamberlain
+**/pnpm-lock.yaml              @pauljohnchamberlain

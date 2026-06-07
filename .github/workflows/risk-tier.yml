@@ -1,0 +1,81 @@
+name: risk-tier
+
+# CANONICAL TEMPLATE — generalized from idol's .github/workflows/risk-tier.yml.
+# Deploy verbatim to .github/workflows/risk-tier.yml in every fleet repo (all stacks).
+#
+# Classifies every PR into risk:low | risk:medium | risk:high and applies the label.
+# Low-tier agent PRs are what auto-merge-agent.yml enables native auto-merge for.
+# High-tier (touches a sensitive path) is hard-blocked by high-risk-guard.yml.
+# The HIGH list is a stack-agnostic SUPERSET: convex/ patterns simply never match in a
+# no-Convex repo, so one template is safe fleet-wide. Keep it in sync with
+# high-risk-guard.yml + the CODEOWNERS variants. See the kb-code-factory doctrine.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  classify:
+    name: risk-tier   # explicit -> the check-run context is `risk-tier`, not `classify`
+    runs-on: [self-hosted, linux, x64, hetzner-cx23]
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            // HIGH-risk path patterns — keep in sync with CODEOWNERS + high-risk-guard.yml.
+            // Superset across stacks (monorepo+Convex / single-pkg+Convex / astro-or-no-Convex).
+            const HIGH = [
+              /(^|\/)convex\//,                          // Convex backend (root OR apps/*/convex, packages/*/convex)
+              /(^|\/)schema\.ts$/,                        // DB / data schema
+              /(^|\/)auth\//,                            // auth dirs
+              /(^|\/)auth\.ts$/,                          // auth entrypoints
+              /better-auth/i,                            // Better Auth config
+              /stripe/i,                                 // payments
+              /payment/i,
+              /(^|\/)billing/i,
+              /\.tf$/,                                    // terraform
+              /^\.github\//,                             // CI / workflows / CODEOWNERS / secrets wiring
+              /(^|\/)\.env/,                             // env files incl .env.example
+              /(^|\/)middleware\.[mc]?[jt]sx?$/,          // edge/auth middleware
+              /(^|\/)vercel\.json$/,                      // deploy config
+              /(^|\/)wrangler\.(toml|jsonc?|ya?ml)$/,     // cloudflare config
+              /(^|\/)pages\/api\//,                       // next/astro pages API routes (no-Convex backends)
+              /(^|\/)package\.json$/,                     // dependency manifest (supply chain)
+              /(^|\/)(pnpm-lock\.yaml|package-lock\.json|yarn\.lock|bun\.lockb?)$/,
+            ];
+            // Pure LOW change-types (docs / copy / tests)
+            const LOW_ONLY = [
+              /\.mdx?$/i,
+              /(^|\/)docs\//,
+              /\.(test|spec)\.[tj]sx?$/,
+              /(^|\/)tests?\//,
+              /(^|\/)e2e\//,
+              /(^|\/)__tests__\//,
+              /(^|\/)\.changeset\//,
+            ];
+            const pr = context.payload.pull_request;
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              ...context.repo, pull_number: pr.number, per_page: 100,
+            });
+            const paths = files.map(f => f.filename);
+            const churn = files.reduce((n, f) => n + (f.additions || 0) + (f.deletions || 0), 0);
+            const isHigh = paths.some(p => HIGH.some(r => r.test(p)));
+            const allLow = paths.length > 0 && paths.every(p => LOW_ONLY.some(r => r.test(p)));
+            let tier;
+            if (isHigh) tier = 'high';
+            else if (allLow) tier = 'low';
+            else if (paths.length <= 15 && churn <= 1000) tier = 'low'; // READY_BUGFIX envelope
+            else tier = 'medium';
+            const want = `risk:${tier}`;
+            const current = (pr.labels || []).map(l => l.name).filter(n => n.startsWith('risk:'));
+            for (const name of current) {
+              if (name !== want) {
+                try { await github.rest.issues.removeLabel({ ...context.repo, issue_number: pr.number, name }); } catch (e) {}
+              }
+            }
+            await github.rest.issues.addLabels({ ...context.repo, issue_number: pr.number, labels: [want] });
+            core.notice(`risk tier: ${tier} (files=${paths.length}, churn=${churn}, high=${isHigh})`);

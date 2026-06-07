@@ -1,0 +1,100 @@
+name: high-risk-guard
+
+# CANONICAL TEMPLATE — generalized from idol's .github/workflows/high-risk-guard.yml.
+# Deploy verbatim to .github/workflows/high-risk-guard.yml in every fleet repo (all stacks).
+#
+# HARD gate for the code factory's HIGH tier. Once required as a status check, it blocks
+# merge whenever a PR touches a sensitive path WITHOUT an approving review from the OWNER.
+# Passes immediately for everything else, so low-tier agent PRs are never held up. This is
+# what makes "high tier is never autonomous" a hard guarantee rather than a labeler
+# convention.
+#
+# Pass-through cases:
+#   - No high-risk path touched  -> pass (low/medium PRs flow).
+#   - Author IS the OWNER        -> pass (GitHub forbids self-approval; the owner authoring
+#                                   the PR is the human-in-the-loop). The #414 fix.
+#   - Author is dependabot[bot]  -> pass. Dependabot's package.json/lockfile bumps run in
+#                                   their own controlled lane (dependabot-automerge.yml) with
+#                                   a configured update scope; they are not "manual" supply-chain
+#                                   risk and must not be blocked by the manifest gate below.
+#   - OWNER has approved the PR   -> pass.
+#   - otherwise (agent/bot high-risk PR, no owner approval) -> FAIL.
+#
+# MUST RUN GREEN ONCE on a repo before you add it to the ruleset's required checks — a
+# required check that has never produced a result blocks ALL merges. See STANDARDIZATION-PLAN.md.
+# Keep the HIGH list in sync with risk-tier.yml + the CODEOWNERS variants. See kb-code-factory.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  pull_request_review:
+    types: [submitted, dismissed]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  guard:
+    name: high-risk-guard   # explicit -> the required-check context is `high-risk-guard`, not `guard`
+    runs-on: [self-hosted, linux, x64, hetzner-cx23]
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            // Keep in sync with CODEOWNERS + risk-tier.yml (superset across stacks).
+            const HIGH = [
+              /(^|\/)convex\//,
+              /(^|\/)schema\.ts$/,
+              /(^|\/)auth\//,
+              /(^|\/)auth\.ts$/,
+              /better-auth/i,
+              /stripe/i,
+              /payment/i,
+              /(^|\/)billing/i,
+              /\.tf$/,
+              /^\.github\//,
+              /(^|\/)\.env/,
+              /(^|\/)middleware\.[mc]?[jt]sx?$/,
+              /(^|\/)vercel\.json$/,
+              /(^|\/)wrangler\.(toml|jsonc?|ya?ml)$/,
+              /(^|\/)pages\/api\//,
+              /(^|\/)package\.json$/,
+              /(^|\/)(pnpm-lock\.yaml|package-lock\.json|yarn\.lock|bun\.lockb?)$/,
+            ];
+            const OWNER = 'pauljohnchamberlain';
+            const pr = context.payload.pull_request;
+            const author = (pr.user && pr.user.login || '').toLowerCase();
+            // Dependabot has its own controlled merge lane; don't block its manifest bumps.
+            if (author === 'dependabot[bot]') {
+              core.info('Dependabot PR — guard passes (handled by dependabot-automerge lane).');
+              return;
+            }
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              ...context.repo, pull_number: pr.number, per_page: 100,
+            });
+            const hits = files.map(f => f.filename).filter(p => HIGH.some(r => r.test(p)));
+            if (hits.length === 0) {
+              core.info('No high-risk paths touched — guard passes.');
+              return;
+            }
+            // The OWNER authoring a high-risk PR IS the human-in-the-loop: GitHub forbids
+            // approving your own PR, so author === OWNER must satisfy the gate. Agent PRs come
+            // from a bot identity, so they still fall through to the OWNER-approval requirement.
+            if (author === OWNER.toLowerCase()) {
+              core.info(`PR authored by @${OWNER} (owner) — guard passes.`);
+              return;
+            }
+            const reviews = await github.paginate(github.rest.pulls.listReviews, {
+              ...context.repo, pull_number: pr.number, per_page: 100,
+            });
+            const byOwner = reviews.filter(r => (r.user && r.user.login || '').toLowerCase() === OWNER.toLowerCase());
+            const approved = byOwner.length > 0 && byOwner[byOwner.length - 1].state === 'APPROVED';
+            if (approved) {
+              core.info(`High-risk paths approved by ${OWNER} — guard passes.`);
+              return;
+            }
+            core.setFailed(
+              `High-risk paths require approval from @${OWNER} before merge:\n` +
+              hits.map(p => '  - ' + p).join('\n')
+            );
