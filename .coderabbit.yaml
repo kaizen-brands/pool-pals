@@ -1,0 +1,31 @@
+# CodeRabbit config — Kaizen code factory. Mirrors config/code-factory/review-standards.md so
+# CodeRabbit (multi-model advisory reviewer) and the Codex `ai-review` gate enforce ONE standard.
+# Living doc — keep path_instructions in sync with review-standards.md.
+language: en-US
+reviews:
+  profile: chill                 # signal over nitpicks
+  request_changes_workflow: false
+  high_level_summary: true
+  high_level_summary_instructions: |
+    Write a concise 2-3 sentence summary of what changed and why, then a bullet list of key changes
+    grouped by area (frontend / backend / convex / config / CI). Flag with ⚠️ anything touching auth,
+    payments, Convex schema, .github/CI, or env/secrets. Keep it skimmable — this is the record a human
+    reads instead of the code.
+  auto_review:
+    enabled: true
+    drafts: false
+  path_instructions:
+    - path: "**/convex/**"
+      instructions: "HIGH-RISK backend. Filenames MUST be camelCase (hyphens break `convex deploy`). Every query/mutation must enforce auth/authorization. Flag schema changes prominently."
+    - path: "**/{app,pages}/api/**"
+      instructions: "Validate input with Zod and delegate to the DAL — never access the DB directly here. Require an auth check before any data access."
+    - path: "**/lib/db/**"
+      instructions: "Data-access layer: requireUser at the boundary; batch reads (flag N+1 loops); this is the only place that touches the DB."
+    - path: "**/*.{tsx,jsx}"
+      instructions: "Use shadcn/ui primitives over raw HTML+Tailwind; use cn() for conditional classes; repeated styles → variants; colors → CSS vars/tokens; no relative cross-module imports (use @ aliases)."
+    - path: "**/{package.json,pnpm-lock.yaml}"
+      instructions: "Flag any new or changed dependency for supply-chain review."
+  path_filters:
+    - "!**/pnpm-lock.yaml"
+    - "!**/*.generated.*"
+    - "!**/_generated/**"
