@@ -1,6 +1,7 @@
 # CodeRabbit config — Kaizen code factory. Mirrors config/code-factory/review-standards.md so
 # CodeRabbit (multi-model advisory reviewer) and the Codex `ai-review` gate enforce ONE standard.
 # Living doc — keep path_instructions in sync with review-standards.md.
+# Schema: https://storage.googleapis.com/coderabbit_public_assets/schema.v2.json
 language: en-US
 reviews:
   profile: chill                 # signal over nitpicks
@@ -35,3 +36,25 @@ reviews:
     - "!**/pnpm-lock.yaml"
     - "!**/*.generated.*"
     - "!**/_generated/**"
+  # Static-analysis / security scanners CodeRabbit runs and feeds into the review (no-human factory → more checks).
+  tools:
+    gitleaks:
+      enabled: true                # committed-secret scanning
+    trufflehog:
+      enabled: true                # verified secret detection
+    semgrep:
+      enabled: true                # SAST — security/quality patterns
+    actionlint:
+      enabled: true                # GitHub Actions workflow linting
+    checkov:
+      enabled: true                # IaC misconfiguration scanning
+# Knowledge base: review against OUR architecture docs + learn across the whole fleet.
+knowledge_base:
+  learnings:
+    scope: global                  # dismissed/accepted/chat learnings apply across all repos
+  code_guidelines:
+    enabled: true
+    filePatterns:                  # the actual standards docs in our repos
+      - "**/CLAUDE.md"
+      - "**/AGENTS.md"
+      - "**/.cursor/rules/**"
