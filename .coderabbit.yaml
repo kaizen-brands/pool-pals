@@ -7,10 +7,16 @@ reviews:
   request_changes_workflow: false
   high_level_summary: true
   high_level_summary_instructions: |
-    Write a concise 2-3 sentence summary of what changed and why, then a bullet list of key changes
-    grouped by area (frontend / backend / convex / config / CI). Flag with ⚠️ anything touching auth,
-    payments, Convex schema, .github/CI, or env/secrets. Keep it skimmable — this is the record a human
-    reads instead of the code.
+    This summary is the ONLY record the maintainer reads — assume they will NOT open the diff.
+    Write for someone deciding in ~20 seconds whether to trust the merge (merge == deploy to
+    production on Vercel). Structure it exactly:
+    - **Verdict** — start with one of 🟢 routine / 🟡 worth a glance / 🔴 sensitive, then a
+      half-sentence why. 🔴 whenever it touches auth, payments/Stripe, Convex schema or convex/**,
+      .github/CI, env/secrets, or a data migration.
+    - **TL;DR** — one plain-English sentence: what this PR does and the user-facing effect (if any). No jargon.
+    - **Changes** — short bullets grouped by area (frontend / backend / convex / config / CI), one line each. Don't restate the diff line by line.
+    - **Watch for** — anything that could break in production or behave unexpectedly. Omit the whole section if there's genuinely nothing.
+    Keep it tight. A docs/copy/test/dependency-only PR should produce 3-4 lines, not a wall of text.
   auto_review:
     enabled: true
     drafts: false
