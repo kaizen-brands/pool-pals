@@ -1,0 +1,136 @@
+name: ai-review
+
+# Independent AI code-review gate for the code factory (Codex / OpenAI gpt-5.5) — a DIFFERENT
+# model family than the Claude-authored agent PRs, so it has different blind spots. Pairs with
+# CodeRabbit (advisory, multi-model). Reviews every non-Dependabot PR AGAINST OUR OWN STANDARDS:
+# it injects the shared house rules (kaizen-brands/.github → code-factory/review-standards.md) +
+# the repo's own CLAUDE.md, so it enforces Kaizen architecture/patterns, not generic best practice.
+# BLOCKS only on high-confidence SERIOUS issues (security / data-loss / auth bypass / committed
+# secrets / broken core logic / clear house-rule violations) so it never stalls the factory on nitpicks.
+#
+# Rollout: ADVISORY first (not a required check). Watch behavior on real PRs, then add `ai-review`
+# to the ruleset required checks once its false-positive rate is acceptable. Model + effort are env
+# vars (swap as models improve). Needs org secret OPENAI_API_KEY. Runs on ubuntu-latest (just an
+# API call — keep it off the shared self-hosted pool so it never queues behind other CI).
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: ai-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  ai-review:
+    name: ai-review
+    if: github.event.pull_request.user.login != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/github-script@v7
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          AI_REVIEW_MODEL: gpt-5.5
+          AI_REVIEW_EFFORT: medium
+          DIFF_CHAR_BUDGET: '160000'
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const key = process.env.OPENAI_API_KEY;
+            const model = process.env.AI_REVIEW_MODEL || 'gpt-5.5';
+            const effort = process.env.AI_REVIEW_EFFORT || 'medium';
+            const budget = parseInt(process.env.DIFF_CHAR_BUDGET || '160000', 10);
+            const MARKER = '<!-- ai-review:codex -->';
+            if (!key) { core.warning('OPENAI_API_KEY not set — ai-review skipped (neutral).'); return; }
+
+            // --- House rules (embedded snapshot of kaizen-brands/.github code-factory/review-standards.md;
+            //     re-sync via the deploy script on change — a workflow's GITHUB_TOKEN can't read other repos) ---
+            const standards = [
+              'ARCHITECTURE & LAYERING: auth (requireUser) at the DAL boundary, not in components; route handlers/',
+              'server actions validate input + delegate to the DAL and never touch the DB directly; no N+1 (batch reads);',
+              'single responsibility; fail fast (no silent fallback); parallelize independent async with Promise.all.',
+              'FILES & IMPORTS: no relative cross-module imports (use @ path aliases); filenames kebab-case EXCEPT',
+              'convex/** which MUST be camelCase (hyphens break convex deploy); components in components/, actions in',
+              'actions/, data access in lib/db/**. CONVEX: convex/**, schema.ts, auth, payments are HIGH-RISK; respect',
+              'service boundaries. FRONTEND: use shadcn primitives over raw HTML+Tailwind; cn() for conditional classes;',
+              'repeated styles → variants; colors → CSS vars/tokens. VALIDATION/PERF: Zod at external boundaries;',
+              "'use cache' + cacheLife/cacheTag; Redis for rate limits only; fewer large queries > many small.",
+              'SECURITY (block-worthy): no secrets/keys committed; no auth bypass; no injection/data-loss paths.',
+              'Do NOT block on style/naming/missing-tests/nitpicks — advisory only.',
+            ].join(' ');
+            async function getText(owner, repo, path) {
+              try {
+                const r = await github.rest.repos.getContent({ owner, repo, path });
+                return Buffer.from(r.data.content, 'base64').toString('utf8');
+              } catch { return ''; }
+            }
+            let conventions = await getText(context.repo.owner, context.repo.repo, 'CLAUDE.md');
+            const webClaude = await getText(context.repo.owner, context.repo.repo, 'apps/web/CLAUDE.md');
+            if (webClaude) conventions += '\n\n--- apps/web/CLAUDE.md ---\n' + webClaude;
+            conventions = conventions.slice(0, 12000);
+
+            // --- PR diff (capped) ---
+            const files = await github.paginate(github.rest.pulls.listFiles, { ...context.repo, pull_number: pr.number, per_page: 100 });
+            let diff = '', truncated = false;
+            for (const f of files) {
+              const chunk = `\n=== ${f.filename} (${f.status}, +${f.additions}/-${f.deletions}) ===\n${f.patch || '(no textual diff / binary)'}\n`;
+              if (diff.length + chunk.length > budget) { truncated = true; break; }
+              diff += chunk;
+            }
+            if (!diff) { core.info('No reviewable diff.'); return; }
+
+            const sys = [
+              'You are a senior staff engineer performing a CODE REVIEW that acts as a BLOCKING CI gate for an',
+              'autonomous "code factory" where NO human reviews the code before it merges and deploys. Review the PR',
+              'AGAINST THE PROVIDED HOUSE RULES AND REPO CONVENTIONS (not just generic best practice). Respond ONLY',
+              'with strict JSON: {"verdict":"pass"|"block","summary":string,"findings":[{"severity":"critical"|"high"|"medium"|"low","file":string,"line":number|null,"issue":string,"suggestion":string}]}',
+              'Set "verdict":"block" ONLY for high-confidence SERIOUS problems that would cause real harm if merged and',
+              'deployed: security vulnerabilities, auth/authorization bypass, data loss/corruption, secrets committed,',
+              'broken core logic that defeats the PR’s purpose, an obvious runtime crash on the happy path, or a clear',
+              'violation of a HOUSE RULE marked block-worthy. Do NOT block for style, naming, missing tests, nitpicks,',
+              'or anything you are not confident is a real defect — emit those as low/medium advisory findings instead.',
+              'False positives stall the factory; when in doubt, "pass".',
+              '\n\n===== HOUSE RULES =====\n' + (standards || '(none provided)'),
+              '\n\n===== REPO CONVENTIONS (CLAUDE.md) =====\n' + (conventions || '(none provided)'),
+            ].join(' ');
+            const user = `PR #${pr.number}: ${pr.title}\n\n${(pr.body || '(no description)').slice(0, 4000)}\n\nUnified diff${truncated ? ' (TRUNCATED to budget)' : ''}:\n${diff}`;
+
+            let verdict = 'pass', summary = '', findings = [];
+            try {
+              const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ model, reasoning_effort: effort, response_format: { type: 'json_object' },
+                  messages: [{ role: 'system', content: sys }, { role: 'user', content: user }] }),
+              });
+              if (!resp.ok) { core.warning(`OpenAI API ${resp.status}: ${(await resp.text()).slice(0,300)} — neutral.`); return; }
+              const data = await resp.json();
+              const parsed = JSON.parse(data.choices?.[0]?.message?.content || '{}');
+              verdict = parsed.verdict === 'block' ? 'block' : 'pass';
+              summary = parsed.summary || '';
+              findings = Array.isArray(parsed.findings) ? parsed.findings : [];
+            } catch (e) { core.warning(`ai-review error: ${e.message} — neutral.`); return; }
+
+            const sev = { critical: '🔴', high: '🟠', medium: '🟡', low: '⚪' };
+            const lines = [
+              MARKER,
+              `### 🤖 ai-review (${model}) — **${verdict === 'block' ? 'CHANGES REQUESTED' : 'OK'}**`,
+              summary ? `\n${summary}\n` : '',
+              truncated ? '_Note: diff truncated to fit the review budget._' : '',
+              findings.length ? '\n| sev | file | issue | suggestion |\n|---|---|---|---|' : '\n_No blocking issues found._',
+              ...findings.map(f => `| ${sev[f.severity] || ''} ${f.severity} | \`${(f.file||'').slice(0,60)}${f.line?(':'+f.line):''}\` | ${(f.issue||'').replace(/\|/g,'\\|').slice(0,200)} | ${(f.suggestion||'').replace(/\|/g,'\\|').slice(0,200)} |`),
+            ].filter(Boolean);
+            const bodyText = lines.join('\n');
+            const comments = await github.paginate(github.rest.issues.listComments, { ...context.repo, issue_number: pr.number, per_page: 100 });
+            const existing = comments.find(c => (c.body || '').includes(MARKER));
+            if (existing) await github.rest.issues.updateComment({ ...context.repo, comment_id: existing.id, body: bodyText });
+            else await github.rest.issues.createComment({ ...context.repo, issue_number: pr.number, body: bodyText });
+
+            const serious = findings.filter(f => f.severity === 'critical' || f.severity === 'high').length;
+            core.notice(`ai-review: ${verdict} (${findings.length} findings, ${serious} serious; standards=${standards?'y':'n'}, conventions=${conventions?'y':'n'})`);
+            if (verdict === 'block') core.setFailed(`ai-review requested changes: ${summary}`.slice(0, 400));
