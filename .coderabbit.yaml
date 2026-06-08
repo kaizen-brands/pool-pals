@@ -5,7 +5,7 @@
 language: en-US
 reviews:
   profile: chill                 # signal over nitpicks
-  request_changes_workflow: false
+  request_changes_workflow: false  # pre_merge_checks stay non-blocking until error-mode promotion (Phase 2)
   high_level_summary: true
   high_level_summary_instructions: |
     This summary is the ONLY record the maintainer reads — assume they will NOT open the diff.
@@ -48,6 +48,29 @@ reviews:
       enabled: true                # GitHub Actions workflow linting
     checkov:
       enabled: true                # IaC misconfiguration scanning
+  # Pre-merge checks — PHASE 1: all WARNING (visible, NON-blocking) to measure false-positive rate.
+  # PHASE 2 (after ~1-2 weeks proving precision): promote reliable checks to `error`, set
+  # request_changes_workflow: true, and add CodeRabbit's check as a required status check in the ruleset
+  # so auto-merge respects it. The "Ignore failed checks" override (owner) is the escape hatch.
+  pre_merge_checks:
+    title:
+      mode: warning
+      requirements: "Conventional Commits: type(scope): subject. type ∈ feat|fix|chore|docs|refactor|test|perf|build|ci."
+    description:
+      mode: warning
+    custom_checks:
+      - name: "Convex filename casing"
+        mode: warning
+        instructions: "Files under any convex/ directory must be camelCase — no hyphens or snake_case (hyphens break `convex deploy`). Fail if a changed file under convex/ has a non-camelCase filename."
+      - name: "API route auth check"
+        mode: warning
+        instructions: "Any new or modified route handler under app/api/** or pages/api/** must perform an authentication/authorization check (e.g. requireUser / session validation) before reading or writing data. Flag handlers that access data with no auth check."
+      - name: "DAL boundary"
+        mode: warning
+        instructions: "Direct database access (Convex ctx.db, Prisma, Drizzle, raw SQL) should occur only in the data-access layer (lib/db/**, convex/**) or server actions that delegate to it — never directly in React components, pages, or API routes. Flag direct DB calls outside the DAL."
+      - name: "No leftover stubs"
+        mode: warning
+        instructions: "Flag shipped (non-test) code paths containing TODO/FIXME placeholders, `throw new Error('not implemented')`, or empty/stub function bodies that indicate an incomplete implementation."
 # Knowledge base: review against OUR architecture docs + learn across the whole fleet.
 knowledge_base:
   learnings:
