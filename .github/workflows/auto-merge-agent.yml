@@ -1,0 +1,34 @@
+name: auto-merge-agent
+
+# CANONICAL TEMPLATE - generalized from idol's .github/workflows/auto-merge-agent.yml.
+# Deploy to .github/workflows/auto-merge-agent.yml ONLY on repos with a proven-green
+# ci-pr-e2e spine (Lane 2). NOT part of the bulk protection rollout - auto-merge is unsafe
+# without the e2e gate. See STANDARDIZATION-PLAN.md (Step 4).
+#
+# Enables GitHub-native auto-merge for LOW-tier PRs authored by the kaizen-brands-agents[bot]
+# GitHub App. Native auto-merge only completes once ALL of the repo's REQUIRED status checks
+# pass (whatever the repo's ruleset requires - e.g. source-validate + high-risk-guard + Vercel
+# + ci-pr-e2e). It never bypasses a gate; it just saves the human click for the boring tier.
+# High/medium PRs are excluded by the risk:low label condition; Dependabot has its own
+# dependabot-automerge.yml. See kb-code-factory.
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review, labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  enable-auto-merge:
+    if: >-
+      github.event.pull_request.user.login == 'kaizen-brands-agents[bot]' &&
+      github.event.pull_request.draft == false &&
+      contains(github.event.pull_request.labels.*.name, 'risk:low')
+    runs-on: [self-hosted, linux, x64, hetzner-cx23]
+    steps:
+      - name: Enable native auto-merge (squash + delete branch)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr merge --auto --squash --delete-branch "${{ github.event.pull_request.html_url }}"
