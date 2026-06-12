@@ -1,0 +1,61 @@
+name: CI · PR E2E
+
+# Preview smoke spine: when a PR's Vercel PREVIEW deploy goes live, run the public
+# smoke spec(s) (`*.smoke.spec.ts`, chromium-public project) against that preview URL.
+# This is the default Lane 2 spine for eligible Vercel repos. It does not provision
+# an isolated backend or require auth secrets; deeper specs can be added later after
+# this read-only smoke is green. Uses VERCEL_AUTOMATION_BYPASS_SECRET to get past
+# Vercel deployment protection. Required as `preview-e2e` only after green.
+# See kb-code-factory.
+
+on:
+  deployment_status:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-pr-e2e-${{ github.event.deployment_status.environment_url || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  preview-e2e:
+    name: preview-e2e
+    # Only Vercel PREVIEW deploys that succeeded (skips Production + failed builds).
+    if: github.event.deployment_status.state == 'success' && contains(github.event.deployment_status.environment, 'Preview')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      BASE_URL: ${{ github.event.deployment_status.environment_url }}
+      VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+      NODE_OPTIONS: --max-old-space-size=3072
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Install pnpm
+        run: |
+          set -euo pipefail
+          PNPM_SPEC="$(node -p "require('./package.json').packageManager || 'pnpm@10.28.2'")"
+          PNPM_VERSION="${PNPM_SPEC#pnpm@}"
+          PNPM_VERSION="${PNPM_VERSION%%+*}"
+          PNPM_DIR="${RUNNER_TEMP:-$HOME/.local}/pnpm-bin"
+          mkdir -p "$PNPM_DIR"
+          curl -fsSL "https://github.com/pnpm/pnpm/releases/download/v${PNPM_VERSION}/pnpm-linux-x64" -o "$PNPM_DIR/pnpm"
+          chmod +x "$PNPM_DIR/pnpm"
+          echo "$PNPM_DIR" >> "$GITHUB_PATH"
+          "$PNPM_DIR/pnpm" --version
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install chromium
+
+      - name: Smoke against preview URL
+        run: pnpm exec playwright test --project=chromium-public --reporter=line
